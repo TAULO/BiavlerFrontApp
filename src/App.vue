@@ -34,7 +34,7 @@ export default {
     max-height: 100vh;
     overflow-x: auto;
     overflow-y: scroll;
-    margin-left: 280px; /* Same as the width of the sidenav */
+    margin-left: 280px; /* same as the width of the sidenav */
 }
 
 body {
