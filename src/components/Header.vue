@@ -1,7 +1,6 @@
 <template>
     <header class="container">
-        <!-- <img src="../assets/header.jpg" alt="" class="img-fluid rounded"> -->
-        <img src="../assets/flyingBee.png" alt="" class="float-end">
+        <img src="../assets/flyingBee.png" alt="" class="bee float-end">
     </header>
 </template>
 <script>
@@ -10,7 +9,8 @@ export default {
 }
 </script>
 <style scoped>
-    img {
+   
+    .bee {
         height: 100px;
         transform: rotate(260deg);
     }

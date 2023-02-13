@@ -6,18 +6,18 @@
         </router-link>
         <hr class="line">
         <ul class="nav nav-pills pills-style flex-column mb-auto">
-            <DashboardItem icon="bi bi-house-door-fill" path="/om" text="Om os" :isActive="isActive"></DashboardItem>
-            <DashboardItem icon="bi bi-mortarboard-fill" path="/kursus" text="Kursus i biavl"></DashboardItem>
-            <DashboardItem icon="bi bi-calendar2-event-fill" path="/kalender" text="Kalender"></DashboardItem>
-            <DashboardItem icon="bi bi-people-fill" path="/bestyrelse" text="Bestyrelse"></DashboardItem>
-            <DashboardItem icon="bi bi-collection-fill" path="/aaret-i-bigaarden" text="Året i bigården"></DashboardItem>
-            <DashboardItem icon="bi bi-book-half" path="/opskrifter" text="Opskrifter"></DashboardItem>
-            <DashboardItem icon="bi bi-images" path="/galleri" text="Galleri"></DashboardItem>
+            <DashboardItem icon="bi bi-house-door-fill" path="/om" text="Om os" @click="setNavActive()" :isActive="active.about"></DashboardItem>
+            <DashboardItem icon="bi bi-mortarboard-fill" path="/kursus" text="Kursus i biavl" @click="setNavActive()" :isActive="active.course"></DashboardItem>
+            <DashboardItem icon="bi bi-calendar2-event-fill" path="/kalender" text="Kalender" @click="setNavActive()" :isActive="active.calender"></DashboardItem>
+            <DashboardItem icon="bi bi-people-fill" path="/bestyrelse" text="Bestyrelse" @click="setNavActive()" :isActive="active.committee"></DashboardItem>
+            <DashboardItem icon="bi bi-collection-fill" path="/aaret-i-bigaarden" text="Året i bigården" @click="setNavActive()" :isActive="active.apiary"></DashboardItem>
+            <DashboardItem icon="bi bi-book-half" path="/opskrifter" text="Opskrifter" @click="setNavActive()" :isActive="active.recipes"></DashboardItem>
+            <DashboardItem icon="bi bi-images" path="/galleri" text="Galleri" @click="setNavActive()" :isActive="active.galleri"></DashboardItem>
         </ul>
         <hr class="line">
         <div class="icon-link">
             <IconLink to="https://www.facebook.com/groups/391008191016453" icon="bi bi-facebook"></IconLink>
-            <!-- <a href="">minebier.dk</a> -->
+            <!-- <a href="">min bier</a> -->
             <IconLink to="" icon="bi bi-instagram"></IconLink>
         </div>
     </div>
@@ -27,18 +27,32 @@
     import DashboardItem from './DashboardItem.vue';
     import IconLink from './IconLink.vue';
 
-   export default {
-     name: 'dashboard-component',
-     data() {
+    export default {
+        name: 'dashboard-component',
+        data() {
         return {
-            isActive: true,
+            active: {
+                about: true,
+                course: false,
+                calender: false,
+                committee: false,
+                apiary: false,
+                recipes: false,
+                galleri: false
+            }
         }
-     },
-     components: {
-        DashboardItem,
-        IconLink
-     }
-   }
+        },
+        components: {
+            DashboardItem,
+            IconLink
+        }, 
+        methods: {
+            setNavActive() {
+                this.active = {...this.active = false}
+                this.active[this.$route.name] = true
+            }
+        }
+    }
 </script>
 
 <style>

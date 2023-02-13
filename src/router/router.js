@@ -2,7 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import About from "../routes/About.vue"
 import Course from "../routes/Course.vue"
 import Calender from "../routes/Calender.vue"
-import Committeee from "../routes/Committee.vue"
+import Committee from "../routes/Committee.vue"
 import Apiary from "../routes/Apiary.vue"
 import Recipes from "../routes/Recipes.vue"
 import Galleri from "../routes/Galleri.vue"
@@ -10,42 +10,42 @@ import Galleri from "../routes/Galleri.vue"
 const routes = [
   {
     path: "/",
-    name: "Home",
+    name: "home",
     component: About
   },
   {
     path: "/om",
-    name: "About",
+    name: "about",
     component: About,
   },
   {
     path: "/kursus",
-    name: "Course",
+    name: "course",
     component: Course,
   },
   {
     path: "/kalender",
-    name: "Calender",
+    name: "calender",
     component: Calender,
   },
   {
     path: "/bestyrelse",
-    name: "Committeee",
-    component: Committeee,
+    name: "committee",
+    component: Committee,
   },
   {
     path: "/aaret-i-bigaarden",
-    name: "Apiary",
+    name: "apiary",
     component: Apiary,
   },
   {
     path: "/opskrifter",
-    name: "Recipes",
+    name: "recipes",
     component: Recipes,
   },
   {
     path: "/galleri",
-    name: "Galleri",
+    name: "galleri",
     component: Galleri,
   },
   {

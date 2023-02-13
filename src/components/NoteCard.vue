@@ -1,5 +1,5 @@
 <template>
-    <div class="card-custom-big-shadow">
+    <div class="container">
         <div class="card-custom card-just-text">
             <div class="content">
                 <h6 class="content-category">{{ category }}</h6>
@@ -24,7 +24,6 @@
 <style scoped>
     .card-custom {
         border-radius: 8px;
-        background-color: #FFFFFF;
         color: #252422;
         margin-bottom: 20px;
         position: relative;
@@ -35,29 +34,13 @@
         margin: 15px;
         width: 300px;
         height: 90%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
     .card-custom.card-just-text {
         text-align: center;
         padding: 40px 15px;
     }
-    .card-custom-big-shadow {
-        max-width: 320px;
-        position: relative;
-    }
-    .card-custom-big-shadow:before {
-        background-image: url("http://static.tumblr.com/i21wc39/coTmrkw40/shadow.png");
-        background-position: center bottom;
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        bottom: -12%;
-        content: "";
-        display: block;
-        left: -12%;
-        position: absolute;
-        right: 0;
-        top: 0;
-        z-index: 0;
-    }
+
     .content-title {
         color: white;
     }

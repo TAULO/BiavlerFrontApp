@@ -1,13 +1,20 @@
 <template>
-    <div>
-        Committee
+    <div class="container d-flex flex-column justify-content-center align-items-center">
+        <h2>Bestyrrelse</h2>
+        <div class="d-flex">
+            <CommitteeMember></CommitteeMember>
+        </div>
     </div>
 </template>
 <script>
-export default {
-    name: "committee-route"
-}
+    import CommitteeMember from '@/components/CommitteeMember.vue';
+
+    export default {
+        name: "committee-route",
+        components: {
+            CommitteeMember
+        }
+    }
 </script>
-<style>
-    
+<style scoped>
 </style>
