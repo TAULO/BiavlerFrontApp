@@ -16,7 +16,7 @@
             </div>
         </div>
 </template>
-
+<!-- commit -->
 <script>
     export default {
         name: "committee-member-component"
