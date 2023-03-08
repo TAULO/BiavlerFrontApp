@@ -1,5 +1,5 @@
 <template>
-    <header class="container">
+    <header class="container-fluid">
         <img src="../assets/flyingBee.png" alt="" class="bee float-end">
     </header>
 </template>

@@ -1,5 +1,5 @@
 <template>
-    <footer class="container">
+    <footer class="container-fluid">
         <img src="../assets/flyingBee.png" alt="">
         
     </footer>
@@ -20,6 +20,7 @@
     }
     img {
         height: 100px;
+        margin-left: 10px;
         transform: rotate(60deg) rotateY(180deg) translate(45px, 15px);
     }
 </style>

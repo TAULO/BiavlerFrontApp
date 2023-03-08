@@ -1,6 +1,6 @@
 <template>
     <div class="container d-flex flex-column justify-content-center align-items-center">
-        <h2 class="display-6">Kommende begivenheder</h2>
+        <h2 class="display-6">Kommende begivenheder (under udvikling)</h2>
         <button v-if="user.loggedIn" class="btn btn-warning m-3" data-bs-toggle="modal"
             data-bs-target="#addEventModal">Tilføj ny begivenhed
         </button>

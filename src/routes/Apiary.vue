@@ -1,6 +1,6 @@
 <template>
     <div>
-        Apiary
+        under udvikling
     </div>
 </template>
 <script>
