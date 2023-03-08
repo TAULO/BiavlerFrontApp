@@ -1,6 +1,6 @@
 <template>
     <div class="container d-flex flex-column justify-content-center align-items-center">
-        <h2>Kursus i praktis biavl</h2>
+        <h2 class="display-6">Begynderkursus i praktis biavl</h2>
         <div class="card">
             <div class="row">
                 <div class="col-md-7 px-3 m-4">

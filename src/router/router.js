@@ -6,6 +6,7 @@ import Committee from "../routes/Committee.vue"
 import Apiary from "../routes/Apiary.vue"
 import Recipes from "../routes/Recipes.vue"
 import Galleri from "../routes/Galleri.vue"
+import _admin from "../routes/_admin.vue"
 
 const routes = [
   {
@@ -47,6 +48,11 @@ const routes = [
     path: "/galleri",
     name: "galleri",
     component: Galleri,
+  },
+  {
+    path: "/admin",
+    name: "admin",
+    component: _admin,
   },
   {
     path: "/:catchAll(.*)",

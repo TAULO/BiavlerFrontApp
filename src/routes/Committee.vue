@@ -1,6 +1,6 @@
 <template>
     <div class="container d-flex flex-column justify-content-center align-items-center">
-        <h2>Bestyrrelse</h2>
+        <h2 class="display-6">Bestyrrelse</h2>
         <div class="d-flex">
             <CommitteeMember></CommitteeMember>
         </div>
