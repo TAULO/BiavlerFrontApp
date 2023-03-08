@@ -1,6 +1,6 @@
 <template>
     <div class="container d-flex justify-content-center">
-        <form @submit.prevent="signIn()" class="d-flex flex-column justify-content-center">
+        <form class="d-flex flex-column justify-content-center">
             <div class="mb-3">
                 <label class="form-label">Brugernavn</label>
                 <input class="form-control" type="email" v-model="email">
@@ -9,8 +9,8 @@
                 <label class="form-label">Kodeord</label>
                 <input class="form-control" type="password" v-model="password">
             </div>
-            <button type="submit" class="btn btn-primary mb-3">log på</button>
-            <button @click="this.$store.dispatch('logOut')" class="btn btn-primary mb-3" v-show="user.loggedIn">log ud</button>
+            <button @click.prevent="signIn()" type="submit" @click="test" class="btn btn-primary mb-3">log på</button>
+            <button @click="signOut()" class="btn btn-primary mb-3" v-show="user.loggedIn">log ud</button>
         </form>
     </div>
 </template>
@@ -27,13 +27,16 @@ export default {
     methods: {
         signIn() {
             this.$store.dispatch("logIn", {email: this.email, password: this.password})
+        },
+        async signOut() {
+            await this.$store.dispatch('logOut')
         }
     }, 
     computed: {
         user() {
             return this.$store.getters.user
-        }
-    }
+        },
+    },
 }
 </script>
 

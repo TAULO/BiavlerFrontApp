@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth"
 
 const firebaseConfig = {
   apiKey: "AIzaSyBtHuZxVsR36yNaAMOwuzoi-PkZJEAQ7bo",
@@ -14,49 +14,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 
-export { app, auth, signInWithEmailAndPassword, signOut}
-
-// class Auth {
-//     signIn(email, password) {
-//         signInWithEmailAndPassword(auth, email, password)
-//           .then((userCredential) => {
-//             const user = userCredential.user;
-//             console.log(user, email, password)
-//           })
-//           .catch((error) => {
-//             const errorCode = error.code;
-//             const errorMessage = error.message;
-//             throw new error(errorCode + " " + errorMessage)
-//           })
-//     }
-    
-//     logout() {
-//         signOut(auth).then(() => {
-//           }).catch((error) => {
-//             throw new error(error)
-//           })
-//     }
-
-//     userStateChanged() {
-//         onAuthStateChanged(auth, user => {
-//             if (user) {
-//                 console.log(user)
-//             } else {
-//                 console.log("user is not signed in")
-//             }
-//             })
-//     }
-
-//     getUser() {
-//         return auth.currentUser
-//     }
-// }
-
-// export default Auth
-
-// const self = {
-//     signIn,
-//     logout
-// }
-
-// export default self
+export { app, auth, onAuthStateChanged, signInWithEmailAndPassword, signOut } 

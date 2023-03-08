@@ -5,7 +5,10 @@
 </template>
 <script>
 export default {
-    name: "header-comonent"
+    name: "header-comonent",
+    beforeMount() {
+        this.$store.dispatch('authChanged')
+    }
 }
 </script>
 <style scoped>

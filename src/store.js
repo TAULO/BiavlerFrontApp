@@ -1,16 +1,21 @@
 import { createStore } from 'vuex'
-import { auth, signInWithEmailAndPassword, signOut } from './services/firebase/auth'
+import { auth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from './services/firebase/auth'
+import { getEvents } from './services/firebase/db'
 
 const store = createStore({
     state: {
       user: {
         loggedIn: false,
         data: null
-      }
+      },
+      events: []
     },
     getters: {
         user(state) {
             return state.user
+        },
+        events(state) {
+          return state.events
         }
     },
     mutations: {
@@ -20,6 +25,10 @@ const store = createStore({
         
         SET_USER(state, data) {
           state.user.data = data;
+        },
+
+        SET_EVENTS(state, data) {
+          state.events = data
         }
       },
       actions: {
@@ -36,6 +45,7 @@ const store = createStore({
       
           async logOut(context){
             await signOut(auth)
+            context.commit('SET_LOGGED_IN', false)
             context.commit('SET_USER', null)
             console.log("user logged out")
           },
@@ -50,8 +60,25 @@ const store = createStore({
             } else {
               context.commit("SET_USER", null);
             }
+        },
+
+        authChanged(context) {
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              context.commit('SET_LOGGED_IN', true)
+              context.commit('SET_USER', user)
+            } else {
+              context.commit('SET_LOGGED_IN', false)
+              context.commit('SET_USER', user)
+            }
+          })
+        },
+
+        async fetchEvents(context) {
+          console.log(await getEvents())
+          context.commit('SET_EVENTS', await getEvents())
         }
-      }   
+      },
 })
 
 export default store
