@@ -1,6 +1,6 @@
 <template>
     <div>
-        Recipes
+        under udvikling
     </div>
 </template>
 <script>

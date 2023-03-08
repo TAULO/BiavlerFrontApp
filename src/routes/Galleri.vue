@@ -1,6 +1,6 @@
 <template>
     <div>
-        Galleri
+        under udvikling
     </div>
 </template>
 <script>
