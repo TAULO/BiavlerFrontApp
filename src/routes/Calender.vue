@@ -52,7 +52,7 @@
                         <h6 class="card-subtitle mb-2 text-muted">{{ event.endDate?.replace("T", " ") }}</h6>
                     </div>
                     <h6 v-else class="card-subtitle mb-2 text-muted">{{ event.startDate?.replace("T", " ") }}</h6>
-                    <p class="card-text">
+                    <p class="card-text" style="{white-space: pre-line;}">
                         {{ event.description }}
                     </p>
                 </div>
@@ -95,7 +95,7 @@
         methods: {
             addEvent() {
                 const { title, startDate, endDate, description } = this.event
-                this.$store.dispatch('addEvent', { title, startDate, endDate, description })
+                this.$store.dispatch('addEvent', { title, startDate, endDate, description: description })
                 this.clearInputFields()
             },
 
@@ -117,8 +117,7 @@
 
         created() {
             this.$store.dispatch('fetchEvents')
-                .then(data => {
-                    console.log(data)
+                .then(() => {
                     this.hasLoaded = true
                 })
         }

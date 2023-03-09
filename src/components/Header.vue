@@ -22,6 +22,7 @@
     .bee {
         height: 100px;
         transform: rotate(260deg);
+        width: auto;
     }
 
     header {
@@ -31,7 +32,9 @@
 
     @media only screen and (max-width: 767px) {
         .bee {
-            display: none;
+            height: 50px;
+            width: auto;
+            transform: translateX(40px) rotate(300deg);
         }
     }
 </style>

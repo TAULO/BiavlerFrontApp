@@ -1,8 +1,10 @@
 <template>
     <div class="dashboard d-flex flex-column flex-shrink-0 bg-gradient">
         <router-link to="/" class="brand-style d-flex align-items-center mb-3 mb-md-0 me-md-auto test">
-            <img src="../assets/bee.png" alt="" width="50" height="50">
-            <span>RINGE OG OMEGNS <br> BIAVLERFORENING</span>
+            <img src="../assets/bee.png" alt="" class="bee">
+            <div class="headline-text">
+                <span>RINGE OG OMEGNS <br> BIAVLERFORENING</span>
+            </div>
         </router-link>
         <hr class="line">
         <ul class="nav nav-pills pills-style flex-column mb-auto">
@@ -110,6 +112,11 @@
         padding: 0px;
     }
 
+    .bee {
+        width: 50px; 
+        height: 50px;
+    }
+
     /* media-q for smaller screen sizes */
     @media only screen and (max-width: 767px) {
         .dashboard {
@@ -124,11 +131,6 @@
             padding: 0px;
         }
 
-        .test {
-            margin-right: 20px;
-                     
-        }
-
         .fb-icon-link {
             margin-left: 21px;
             margin-bottom: 20px;
@@ -137,5 +139,19 @@
         .instagram-icon-link {
             display: none;
         }       
+
+        .headline-text {
+            display: none;
+        }
+
+        .bee {
+            height: 35px;
+            width: auto;
+            transform: translate(7px, 10px);
+        }
+
+        .line {
+            margin: 5px;
+        }
     }
 </style>

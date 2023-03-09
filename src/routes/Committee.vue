@@ -1,7 +1,10 @@
 <template>
     <div class="container d-flex flex-column justify-content-center align-items-center">
         <h2 class="display-6">Bestyrrelse (under udvikling)</h2>
-        <div class="d-flex">
+        <div class="">
+            <CommitteeMember></CommitteeMember>
+            <CommitteeMember></CommitteeMember>
+            <CommitteeMember></CommitteeMember>
             <CommitteeMember></CommitteeMember>
         </div>
     </div>

@@ -26,7 +26,7 @@ async function addEvent(title, startDate, endDate, description) {
     })
     console.log("Added event with id: " + ref.id)
   } catch(e) {
-    console.log("Error adding document: ", e)
+    console.log("Error adding event:", e)
   }
 }
 
@@ -34,14 +34,16 @@ async function deleteEvent(docId) {
     const docRef = doc(db, calendarCol, docId)
     await deleteDoc(docRef)
     .then(() => console.log("document deleted with id: " + docId))
+    .catch(e => console.log("Error deleting event:", e))
+    
 }
 
 async function getEvents() {
     const events = []
-    const querySnapshot = await getDocs(collection(db, calendarCol));
+    const querySnapshot = await getDocs(collection(db, calendarCol))
     querySnapshot.forEach((event) => {
         events.push({...event.data(), id: event.id})
-    });
+    })
     return events
 }
 

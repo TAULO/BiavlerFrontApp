@@ -1,5 +1,6 @@
 <template>
-    <div class="team-boxed">
+    <div class="committee-container">
+        <div class="team-boxed">
             <div class="row people">
                 <div class="card col-md-6 col-lg-4 item">
                     <div class="box">
@@ -15,6 +16,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </template>
 <script>
     export default {
@@ -38,11 +40,21 @@
         color: inherit;
     }
 
+    .committee-container {
+        margin: 1rem;
+    }
+
     @media (max-width:767px) {
         .team-boxed h2 {
             margin-bottom: 25px;
             padding-top: 25px;
             font-size: 24px;
+        }
+
+        .committee-container {
+            margin: 0px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
         }
     }
 

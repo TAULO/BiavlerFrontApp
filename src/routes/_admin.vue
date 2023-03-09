@@ -11,7 +11,7 @@
             </div>
             <button @click.prevent="signIn()" type="submit" @click="test" class="btn btn-primary mb-3"
                 v-if="!user.loggedIn" data-bs-dismiss="alert">log på</button>
-            <button @click="signOut()" class="btn btn-primary mb-3" v-show="user.loggedIn">log ud</button>
+            <button @click="signOut()" class="btn btn-primary mb-3 btn-danger" v-show="user.loggedIn">log ud</button>
         </form>
     </div>
 </template>
