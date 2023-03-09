@@ -3,9 +3,9 @@
             <div class="row people">
                 <div class="card col-md-6 col-lg-4 item">
                     <div class="box">
-                        <img class="rounded-circle" src="../assets/2.jpg">
-                        <h3 class="name">Ben Johnson</h3>
-                        <p class="title">Musician</p>
+                        <img class="rounded-circle" src="../assets/bee.png">
+                        <h3 class="name">aenean tortor est</h3>
+                        <p class="title">aenean tortor est</p>
                         <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus.
                             Praesent aliquam in tellus eu gravida. Aliquam varius finibus est, et interdum justo
                             suscipit id. Etiam dictum feugiat tellus, a semper massa. </p>

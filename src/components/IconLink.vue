@@ -18,6 +18,7 @@
     a {
         margin-right: 20px;
     }
+
     a:hover {
         opacity: 0.5;
     }

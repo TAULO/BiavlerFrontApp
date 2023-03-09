@@ -9,35 +9,45 @@
                 <label class="form-label">Kodeord</label>
                 <input class="form-control" type="password" v-model="password">
             </div>
-            <button @click.prevent="signIn()" type="submit" @click="test" class="btn btn-primary mb-3">log på</button>
+            <button @click.prevent="signIn()" type="submit" @click="test" class="btn btn-primary mb-3"
+                v-if="!user.loggedIn" data-bs-dismiss="alert">log på</button>
             <button @click="signOut()" class="btn btn-primary mb-3" v-show="user.loggedIn">log ud</button>
         </form>
     </div>
 </template>
 
 <script>
-export default {
-    name: "admin-route",
-    data() {
-        return {
-            email: "",
-            password: ""
-        }
-    },
-    methods: {
-        signIn() {
-            this.$store.dispatch("logIn", {email: this.email, password: this.password})
+    export default {
+        name: "admin-route",
+        data() {
+            return {
+                email: "",
+                password: ""
+            }
         },
-        async signOut() {
-            await this.$store.dispatch('logOut')
-        }
-    }, 
-    computed: {
-        user() {
-            return this.$store.getters.user
+        methods: {
+            signIn() {
+                try {
+                    this.$store.dispatch("logIn", {
+                        email: this.email,
+                        password: this.password
+                    })
+                    window.alert("Du er nu logget ind som " + this.email)
+                } catch(e) {
+                    window.alert(e)
+                }
+
+            },
+            async signOut() {
+                await this.$store.dispatch('logOut')
+            }
         },
-    },
-}
+        computed: {
+            user() {
+                return this.$store.getters.user
+            },
+        },
+    }
 </script>
 
 <style>
