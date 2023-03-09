@@ -46,7 +46,12 @@
                     <h5 class="card-title">
                         {{ event.title }}
                     </h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ event.endDate.replace("T", " ") }}</h6>
+                    <div class="d-flex" v-if="event.endDate !== null">
+                        <h6 class="card-subtitle mb-2 text-muted">{{ event.startDate?.replace("T", " ") }}</h6>
+                        <h6 class="card-subtitle text-muted mx-1">til</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ event.endDate?.replace("T", " ") }}</h6>
+                    </div>
+                    <h6 v-else class="card-subtitle mb-2 text-muted">{{ event.startDate?.replace("T", " ") }}</h6>
                     <p class="card-text">
                         {{ event.description }}
                     </p>
@@ -61,10 +66,6 @@
     </div>
 </template>
 <script>
-    import {
-        addEvent,
-        deleteEvent
-    } from '../services/firebase/db.js'
     export default {
         name: "calender-route",
         data() {
@@ -93,16 +94,14 @@
         // TODO: move add event methods to state 
         methods: {
             addEvent() {
-                this.$store.dispatch('fetchEvents')
-                addEvent(this.event.title, this.event.startDate, this.event.endDate, this.event.description)
+                const { title, startDate, endDate, description } = this.event
+                this.$store.dispatch('addEvent', { title, startDate, endDate, description })
                 this.clearInputFields()
             },
 
             deleteEvent(docId, eventTitle) {
                 if(confirm("Er du sikker på at du vil slette " + eventTitle + "?")) {
-                    this.$store.dispatch('fetchEvents')
-                    console.log(docId)
-                    deleteEvent(docId)
+                    this.$store.dispatch('deleteEvent', { docId })
                 }
             },
 

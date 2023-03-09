@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import { auth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from './services/firebase/auth'
-import { getEvents } from './services/firebase/db'
+// eslint-disable-next-line no-unused-vars
+import { getEvents, addEvent, deleteEvent } from './services/firebase/db'
 
 const store = createStore({
     state: {
@@ -8,7 +9,13 @@ const store = createStore({
         loggedIn: false,
         data: null
       },
-      events: []
+      events: [{
+        title: "",
+        startDate: null,
+        endDate: null,
+        description: "",
+        id: ""
+      }],
     },
     getters: {
         user(state) {
@@ -28,6 +35,7 @@ const store = createStore({
         },
 
         SET_EVENTS(state, data) {
+          console.log(data)
           state.events = data
         }
       },
@@ -39,7 +47,7 @@ const store = createStore({
               context.commit('SET_USER', response.user)
               console.log("login succeeded")
             } else {
-                throw new Error('login failed')
+                throw new Error('Der skete en fejl ved login. Prøv igen')
             }
           },
       
@@ -49,18 +57,6 @@ const store = createStore({
             context.commit('SET_USER', null)
             console.log("user logged out")
           },
-      
-          async fetchUser(context, user) {
-            context.commit("SET_LOGGED_IN", user !== null);
-            if (user) {
-              context.commit("SET_USER", {
-                displayName: user.displayName,
-                email: user.email
-              });
-            } else {
-              context.commit("SET_USER", null);
-            }
-        },
 
         authChanged(context) {
           onAuthStateChanged(auth, (user) => {
@@ -74,8 +70,17 @@ const store = createStore({
           })
         },
 
+        async addEvent(context, { title, startDate, endDate, description }) {
+          addEvent(title, startDate, endDate, description)
+          context.commit('SET_EVENTS', await getEvents())
+        },
+
+        async deleteEvent(context, { docId }) {
+          deleteEvent(docId)
+          context.commit('SET_EVENTS', await getEvents())
+        },
+
         async fetchEvents(context) {
-          console.log(await getEvents())
           context.commit('SET_EVENTS', await getEvents())
         }
       },
