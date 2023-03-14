@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, where } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBtHuZxVsR36yNaAMOwuzoi-PkZJEAQ7bo",
@@ -47,4 +47,14 @@ async function getEvents() {
     return events
 }
 
-export { addEvent, getEvents, deleteEvent }
+async function searcEventQuery(title) {
+    const q = query(collection(calendarCol, db), where('title', '==', title))
+    const filteredEvents = []
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((event) => {
+        filteredEvents.push({...event.data(), id: event.id})
+    })
+    return filteredEvents
+}
+
+export { addEvent, getEvents, deleteEvent, searcEventQuery }
