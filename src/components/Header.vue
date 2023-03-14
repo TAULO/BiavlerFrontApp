@@ -34,7 +34,7 @@
         .bee {
             height: 50px;
             width: auto;
-            transform: translateX(40px) rotate(300deg);
+            transform: translateX(10px) rotate(300deg);
         }
     }
 </style>

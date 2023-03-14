@@ -5,7 +5,7 @@
             data-bs-target="#addEventModal">Tilføj ny begivenhed
         </button>
         <div class="modal modal-lg fade" id="addEventModal">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="addEventModal">Tilføj ny begivenhed</h1>
@@ -39,7 +39,7 @@
         </div>
         <div class="container" v-if="hasLoaded">
             <div class="m-4 card p-1" v-for="(event, index) in events" :key="index">
-                <div class="card-body">
+                <div class="card-body whitespace-fix">
                     <div class="d-flex justify-content-end" v-if="user.loggedIn" @click="deleteEvent(event.id, event.title)">
                         <i class="bi bi-trash-fill position-absolute"></i>
                     </div>
@@ -52,7 +52,7 @@
                         <h6 class="card-subtitle mb-2 text-muted">{{ event.endDate?.replace("T", " ") }}</h6>
                     </div>
                     <h6 v-else class="card-subtitle mb-2 text-muted">{{ event.startDate?.replace("T", " ") }}</h6>
-                    <p class="card-text" style="{white-space: pre-line;}">
+                    <p class="card-text">
                         {{ event.description }}
                     </p>
                 </div>
@@ -95,7 +95,7 @@
         methods: {
             addEvent() {
                 const { title, startDate, endDate, description } = this.event
-                this.$store.dispatch('addEvent', { title, startDate, endDate, description: description })
+                this.$store.dispatch('addEvent', { title, startDate, endDate, description })
                 this.clearInputFields()
             },
 
@@ -132,5 +132,13 @@
         color: red;
         opacity: 0.5;
         cursor: pointer;
+    }
+
+    .whitespace-fix {
+        white-space: pre-line;
+    }   
+
+    textarea {
+        height: 200px;
     }
 </style>

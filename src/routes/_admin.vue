@@ -26,9 +26,9 @@
             }
         },
         methods: {
-            signIn() {
+            async signIn() {
                 try {
-                    this.$store.dispatch("logIn", {
+                    await this.$store.dispatch("logIn", {
                         email: this.email,
                         password: this.password
                     })
