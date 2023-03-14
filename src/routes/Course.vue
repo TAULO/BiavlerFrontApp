@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid d-flex flex-column justify-content-center align-items-center">
-        <h2 class="display-6">Begynderkursus i praktis biavl</h2>
+        <h2 class="display-6 text-center">Begynderkursus i praktis biavl</h2>
         <div class="card d-flex flex-row justify-content-between m-4 w-100">
             <div class="m-3">
                 <div class="row">
@@ -212,6 +212,10 @@
 
         .notecard-cointainer {
             flex-direction: column;
+        }
+
+        .display-6 {
+            font-size: lalargerrge;
         }
     }
 </style>

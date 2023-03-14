@@ -1,7 +1,6 @@
 <template>
     <footer class="container-fluid">
         <img src="../assets/flyingBee.png" alt="">
-        
     </footer>
 </template>
 
