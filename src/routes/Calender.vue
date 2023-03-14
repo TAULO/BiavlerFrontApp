@@ -1,6 +1,6 @@
 <template>
-    <div class="container d-flex flex-column justify-content-center align-items-center">
-        <h2 class="display-6">Kommende begivenheder (under udvikling)</h2>
+    <div class="container d-flex flex-column align-items-center">
+        <div class="display-6 mb-5 text-center">Kommende begivenheder (under udvikling)</div>
         <button v-if="user.loggedIn" class="btn btn-warning m-3" data-bs-toggle="modal"
             data-bs-target="#addEventModal">Tilføj ny begivenhed
         </button>
@@ -37,10 +37,25 @@
                 </div>
             </div>
         </div>
-        <div class="container" v-if="hasLoaded">
+        <div class="w-75 event-container" v-if="hasLoaded">
+            <div class="d-flex justify-content-between">
+                <div class="dropdown">
+                    <span class="input-group-text filter-span"><i class="bi bi-filter-circle"></i></span>
+                    <div class="filter-items ms-4">
+                        <div>Seneste</div>
+                        <div>1</div>
+                        <div>1</div>
+                    </div>
+                </div>
+                <div class="input-group me-4 search-input">
+                    <span class="input-group-text search-span"><i class="bi bi-search"></i></span>
+                    <input class="form-control" placeholder="søg efter begivenheder">
+                </div>
+            </div>
             <div class="m-4 card p-1" v-for="(event, index) in events" :key="index">
                 <div class="card-body whitespace-fix">
-                    <div class="d-flex justify-content-end" v-if="user.loggedIn" @click="deleteEvent(event.id, event.title)">
+                    <div class="d-flex justify-content-end" v-if="user.loggedIn"
+                        @click="deleteEvent(event.id, event.title)">
                         <i class="bi bi-trash-fill position-absolute"></i>
                     </div>
                     <h5 class="card-title">
@@ -90,18 +105,30 @@
                 return this.$store.getters.events
             }
         },
-    
+
         // TODO: move add event methods to state 
         methods: {
             addEvent() {
-                const { title, startDate, endDate, description } = this.event
-                this.$store.dispatch('addEvent', { title, startDate, endDate, description })
+                const {
+                    title,
+                    startDate,
+                    endDate,
+                    description
+                } = this.event
+                this.$store.dispatch('addEvent', {
+                    title,
+                    startDate,
+                    endDate,
+                    description
+                })
                 this.clearInputFields()
             },
 
             deleteEvent(docId, eventTitle) {
-                if(confirm("Er du sikker på at du vil slette " + eventTitle + "?")) {
-                    this.$store.dispatch('deleteEvent', { docId })
+                if (confirm("Er du sikker på at du vil slette " + eventTitle + "?")) {
+                    this.$store.dispatch('deleteEvent', {
+                        docId
+                    })
                 }
             },
 
@@ -112,6 +139,11 @@
                     endDate: null,
                     description: ""
                 }
+            },
+
+            searchForEvent(e) {
+                console.log(e)
+                // this.$store.dispatch('searcEventQuery', { title: this.event.title })
             }
         },
 
@@ -129,16 +161,75 @@
     }
 
     i:hover {
-        color: red;
         opacity: 0.5;
         cursor: pointer;
     }
 
     .whitespace-fix {
         white-space: pre-line;
-    }   
+    }
 
     textarea {
         height: 200px;
+    }
+
+    .search-span {
+        padding-right: 2px;
+    }
+
+    .search-input {
+        width: 25%;
+        text-overflow: ellipsis;
+    }
+
+    .form-control {
+        font-size: small;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .filter-span {
+        padding-right: 2px;
+        margin-left: 1.5rem;
+        
+    }
+
+    .filter-items {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdown:hover .filter-items {
+        display: block;
+    }
+
+    /* media-q for smaller screen sizes */
+    @media only screen and (max-width: 1000px) {
+        .search-input {
+            width: 50%;
+            text-overflow: ellipsis;
+        }
+
+        .event-container {
+            width: 100%!important;
+        }
+    }
+
+    @media only screen and (max-width: 767px) {
+        .search-input {
+            width: 100%;
+            text-overflow: ellipsis;
+        }
+
+        .event-container {
+            width: 100%!important;
+        }
     }
 </style>
