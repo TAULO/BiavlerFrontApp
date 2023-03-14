@@ -1,18 +1,15 @@
 <template>
-    <div class="committee-container">
-        <div class="team-boxed">
-            <div class="row people">
-                <div class="card col-md-6 col-lg-4 item">
-                    <div class="box">
-                        <img class="rounded-circle" src="../assets/bee.png">
-                        <h3 class="name">aenean tortor est</h3>
-                        <p class="title">aenean tortor est</p>
-                        <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus.
-                            Praesent aliquam in tellus eu gravida. Aliquam varius finibus est, et interdum justo
-                            suscipit id. Etiam dictum feugiat tellus, a semper massa. </p>
-                        <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i
-                                    class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
-                    </div>
+    <div class="card mb-3 w-75">
+        <div class="row no-gutters">
+            <div class="col-lg-4 d-flex align-items-center justify-content-center ">
+                <img src="../assets/bee.png" alt="...">
+            </div>
+            <div class="col-lg-8">
+                <div class="card-body d-flex flex-column align-items-center">
+                    <h5 class="card-title">{{ name }}</h5>
+                    <p class="card-text">{{ role }}</p>
+                    <p class="card-text">{{ bio }}</p>
+                    <p class="card-text mt-lg-5"><small class="text-muted">{{ email }}</small></p>
                 </div>
             </div>
         </div>
@@ -20,65 +17,48 @@
 </template>
 <script>
     export default {
-        name: "committee-member-component"
+        name: "committee-member-component",
+        props: {
+            image: String,
+            name: String,
+            role: String,
+            bio: String,
+            email: String
+        }
     }
 </script>
 
 <style scoped>
-    .team-boxed {
-        color: #313437;
-    }
-
-    .team-boxed p {
-        color: #7d8285;
-    }
-
-    .team-boxed h2 {
-        font-weight: bold;
-        margin-bottom: 40px;
-        padding-top: 40px;
-        color: inherit;
-    }
-
-    .committee-container {
-        margin: 1rem;
-    }
-
-    @media (max-width:767px) {
-        .team-boxed h2 {
-            margin-bottom: 25px;
-            padding-top: 25px;
-            font-size: 24px;
-        }
-
-        .committee-container {
-            margin: 0px;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-        }
-    }
-
-    .team-boxed .intro {
-        font-size: 16px;
-        max-width: 500px;
-        margin: 0 auto;
-    }
-
-    .team-boxed .intro p {
-        margin-bottom: 0;
-    }
-
-    .team-boxed .item {
-        text-align: center;
-        padding: 30px;
-    }
-
-    .team-boxed .item .box {
-        text-align: center;
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        padding: 10px;
     }
 
     img {
         height: 200px;
+        width: auto;
         margin-bottom: 30px;
     }
+
+    @media only screen and (max-width: 500px) {
+        .card-title {
+            font-size: medium;
+        }
+
+        .card {
+            width: 100%!important;
+            font-size: small;
+        }
+    }
+
+    @media only screen and (max-width: 1100px) {
+        img {
+            height: 100px;
+            width: auto;
+            margin-bottom: 30px;
+        }
+    }
+
 </style>
