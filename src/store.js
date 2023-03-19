@@ -1,6 +1,7 @@
 import {
   createStore
 } from 'vuex'
+
 import {
   auth,
   signInWithEmailAndPassword,
@@ -8,12 +9,14 @@ import {
   onAuthStateChanged,
   searcEventQuery
 } from './services/firebase/auth'
-// eslint-disable-next-line no-unused-vars
+
 import {
   getEvents,
   addEvent,
   deleteEvent
 } from './services/firebase/db'
+
+import { getImagesUrl, uploadImages, deleteImage, deleteImages } from './services/firebase/storage';
 
 const store = createStore({
   state: {
@@ -21,6 +24,7 @@ const store = createStore({
       loggedIn: false,
       data: null
     },
+
     events: [{
       title: "",
       startDate: null,
@@ -28,15 +32,25 @@ const store = createStore({
       description: "",
       id: ""
     }],
+
+    images: [{name: "", url: ""}]
+
   },
   getters: {
     user(state) {
       return state.user
     },
+
     events(state) {
       return state.events
+    },
+
+    images(state) {
+      console.log(state.images)
+      return state.images
     }
   },
+
   mutations: {
     SET_LOGGED_IN(state, value) {
       state.user.loggedIn = value;
@@ -47,10 +61,14 @@ const store = createStore({
     },
 
     SET_EVENTS(state, data) {
-      console.log(data)
       state.events = data
+    },
+
+    SET_IMAGES(state, data) {
+      state.images = data
     }
   },
+
   actions: {
     async logIn(context, {
       email,
@@ -115,6 +133,25 @@ const store = createStore({
       title
     }) {
       context.commit('SET_EVENTS', await searcEventQuery(title))
+    },
+
+    async getImagesUrl(context) {
+      context.commit('SET_IMAGES', await getImagesUrl())
+    },
+
+    async uploadImages(context, { files }) {
+      await uploadImages(files)
+      context.commit('SET_IMAGES', await getImagesUrl())
+    },
+
+    async deleteImage(context, { imageName }) {
+      await deleteImage(imageName)
+      context.commit('SET_IMAGES', await getImagesUrl())
+    },
+
+    async deleteImages(context, { images }) {
+      await deleteImages(images)
+      context.commit('SET_IMAGES', await getImagesUrl())
     }
   },
 })
