@@ -52,31 +52,34 @@
                     <input class="form-control" placeholder="søg efter begivenheder">
                 </div>
             </div>
-            <div class="m-4 card p-1" v-for="(event, index) in events" :key="index">
-                <div class="card-body whitespace-fix">
-                    <div class="d-flex justify-content-end" v-if="user.loggedIn"
-                        @click="deleteEvent(event.id, event.title)">
-                        <i class="bi bi-trash-fill position-absolute"></i>
+            <template v-if="hasEvents">
+                <div class="m-4 card p-1" v-for="(event, index) in events" :key="index">
+                    <div class="card-body whitespace-fix">
+                        <div class="d-flex justify-content-end" v-if="user.loggedIn"
+                            @click="deleteEvent(event.id, event.title)">
+                            <i class="bi bi-trash-fill position-absolute"></i>
+                        </div>
+                        <h5 class="card-title">
+                            {{ event.title }}
+                        </h5>
+                        <div class="d-flex" v-if="event.endDate !== null">
+                            <h6 class="card-subtitle mb-2 text-muted">{{ event.startDate?.replace("T", " ") }}</h6>
+                            <h6 class="card-subtitle text-muted mx-1">til</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ event.endDate?.replace("T", " ") }}</h6>
+                        </div>
+                        <h6 v-else class="card-subtitle mb-2 text-muted">{{ event.startDate?.replace("T", " ") }}</h6>
+                        <p class="card-text">
+                            {{ event.description }}
+                        </p>
                     </div>
-                    <h5 class="card-title">
-                        {{ event.title }}
-                    </h5>
-                    <div class="d-flex" v-if="event.endDate !== null">
-                        <h6 class="card-subtitle mb-2 text-muted">{{ event.startDate?.replace("T", " ") }}</h6>
-                        <h6 class="card-subtitle text-muted mx-1">til</h6>
-                        <h6 class="card-subtitle mb-2 text-muted">{{ event.endDate?.replace("T", " ") }}</h6>
-                    </div>
-                    <h6 v-else class="card-subtitle mb-2 text-muted">{{ event.startDate?.replace("T", " ") }}</h6>
-                    <p class="card-text">
-                        {{ event.description }}
-                    </p>
                 </div>
+            </template>
+            <div v-else class="text-center mt-5">
+                Ingen begivenhed tilføjet endnu
             </div>
         </div>
-        <div v-else>
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
+        <div class="spinner-border" role="status" v-else>
+            <span class="visually-hidden">Loading...</span>
         </div>
     </div>
 </template>
@@ -103,6 +106,10 @@
 
             events() {
                 return this.$store.getters.events
+            },
+
+            hasEvents() {
+                return this.events.length > 0
             }
         },
 
@@ -194,7 +201,7 @@
     .filter-span {
         padding-right: 2px;
         margin-left: 1.5rem;
-        
+
     }
 
     .filter-items {
@@ -218,7 +225,7 @@
         }
 
         .event-container {
-            width: 100%!important;
+            width: 100% !important;
         }
     }
 
@@ -229,7 +236,7 @@
         }
 
         .event-container {
-            width: 100%!important;
+            width: 100% !important;
         }
     }
 </style>

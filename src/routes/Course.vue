@@ -1,7 +1,7 @@
 <template>
-    <div class="container-fluid d-flex flex-column justify-content-center align-items-center">
+    <div class="container d-flex flex-column justify-content-center align-items-center">
         <h2 class="display-6 text-center">Begynderkursus i praktis biavl</h2>
-        <div class="card d-flex flex-row justify-content-between m-4 w-100">
+        <div class="card d-flex flex-row justify-content-between m-4">
             <div class="m-3">
                 <div class="row">
                     <div class="col-md px-3 m-4">
@@ -33,40 +33,42 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md px-3 m-4">
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                            class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                            aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                            aria-label="Slide 3"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"
-                            aria-label="Slide 4"></button>
+            <div class="row">
+                <div class="col-md px-3 m-4">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                                class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                                aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                                aria-label="Slide 3"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"
+                                aria-label="Slide 4"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="../assets/coursesImages/img1.png" class="d-block w-20 h-20 rounded" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="../assets/coursesImages/img2.png" class="d-block w-20 h-20 rounded" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="../assets/coursesImages/img3.png" class="d-block w-20 h-20 rounded" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="../assets/coursesImages/img4.png" class="d-block w-20 h-20 rounded" alt="...">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
                     </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="../assets/coursesImages/img1.png" class="d-block w-20 h-20" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="../assets/coursesImages/img2.png" class="d-block w-20 h-20" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="../assets/coursesImages/img3.png" class="d-block w-20 h-20" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="../assets/coursesImages/img4.png" class="d-block w-20 h-20" alt="...">
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
                 </div>
             </div>
         </div>
@@ -174,7 +176,8 @@
     }
 
     img {
-        height: 350px;
+        width: 350px;
+        height: auto;
     }
 
     .carousel-indicators {
@@ -205,9 +208,9 @@
         justify-content: center;
     }
      /* media-q for smaller screen sizes */
-     @media only screen and (max-width: 767px) {
-        .img {
-            margin-left: 100px;
+     @media only screen and (max-width: 1000px) {
+        img {
+            width: 100px;
         }
 
         .notecard-cointainer {
