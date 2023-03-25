@@ -4,16 +4,18 @@ import {
 
 import {
   auth,
-  signInWithEmailAndPassword,
-  signOut,
   onAuthStateChanged,
-  searcEventQuery
+  searcEventQuery,
+  logIn,
+  logOut
 } from './services/firebase/auth'
 
 import {
   getEvents,
+  getEvent,
   addEvent,
-  deleteEvent
+  deleteEvent,
+  updateEvent
 } from './services/firebase/db'
 
 import { getImagesUrl, uploadImages, deleteImage, deleteImages } from './services/firebase/storage';
@@ -46,7 +48,6 @@ const store = createStore({
     },
 
     images(state) {
-      console.log(state.images)
       return state.images
     }
   },
@@ -74,23 +75,18 @@ const store = createStore({
       email,
       password
     }) {
-      try {
-        const response = await signInWithEmailAndPassword(auth, email, password)
-        if (response) {
-          context.commit('SET_LOGGED_IN', true)
-          context.commit('SET_USER', response.user)
-          console.log("login succeeded")
-        } else {
-          throw new Error('Der skete en fejl ved login. Prøv igen')
-        }
-      } catch (e) {
-        console.log(e)
-        throw new Error('Der skete en fejl ved login. Kig efter korrekt e-mail eller password og prøv igen.')
+      const response = await logIn(email, password)
+      if (response) {
+        context.commit('SET_LOGGED_IN', true)
+        context.commit('SET_USER', response.user)
+        console.log("login succeeded")
+      } else {
+        throw new Error('Der skete en fejl ved login. Prøv igen')
       }
     },
 
     async logOut(context) {
-      await signOut(auth)
+      await logOut(auth)
       context.commit('SET_LOGGED_IN', false)
       context.commit('SET_USER', null)
       console.log("user logged out")
@@ -123,6 +119,21 @@ const store = createStore({
     }) {
       deleteEvent(docId)
       context.commit('SET_EVENTS', await getEvents())
+    },
+
+    async updateEvent(context, {
+      docId,
+      title,
+      startDate,
+      endDate,
+      description
+    }) {
+      updateEvent(docId, title, startDate, endDate, description)
+      context.commit('SET_EVENTS', await getEvents())
+    },
+
+    async getEvent(context, { docId }) {
+      return getEvent(docId)
     },
 
     async fetchEvents(context) {
