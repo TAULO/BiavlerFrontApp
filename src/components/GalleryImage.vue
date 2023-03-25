@@ -1,10 +1,11 @@
 <template>
-    <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
-        <!-- <div class="d-flex justify-content-end text-warning" v-if="user.loggedIn" @click="$emit('deleteImage')">
-            <i class="bi bi-x-circle-fill position-absolute m-2"></i>
-        </div> -->
-        <img v-if="user.loggedIn" :src="imgUrl" class="w-100 shadow-1-strong rounded mb-4" :alt="title" @click="$emit('selectMultipleImages', $event)" />
-        <img v-else :src="imgUrl" class="w-100 shadow-1-strong rounded mb-4" :alt="title" />
+    <div class="col-lg-4 col-md-12 mb-4">
+        <div class="d-flex justify-content-end position-relative" v-if="user.loggedIn"
+            @click="$emit('selectMultipleImages', $event)">
+            <i class="bi bi-x-circle-fill m-2 me-3 fs-2 position-absolute text-warning delete-icon"></i>
+        </div>
+        <img :src="imgUrl" class="w-100 shadow rounded" :alt="title" :data-bs-target="modalTarget"
+            data-bs-toggle="modal" />
     </div>
 </template>
 
@@ -15,6 +16,7 @@
         props: {
             title: String,
             imgUrl: String,
+            modalTarget: String
         },
 
         computed: {
@@ -31,8 +33,18 @@
         cursor: pointer;
     }
 
+    img {
+        /* max-height: 100px!important; */
+        max-height: 400px;
+        object-fit: cover;
+    }
+
     img:hover {
         opacity: 0.5;
         cursor: pointer;
+    }
+
+    .delete-icon {
+        z-index: 10;
     }
 </style>
