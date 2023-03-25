@@ -1,31 +1,50 @@
 <template>
     <div class="container">
-        <div class="d-flex flex-column align-items-center text-center">
-            <div class="display-6 mb-5">Galleri (under udvikling)</div>
-            <div v-if="user.loggedIn">
-                <input type="file" multiple @change="getFilesOnChange">
-                <button v-show="hasFiles" @click="uploadImages($event)" class="btn btn-warning m-3">upload</button>
-                <button v-if="hasDeletedImages" @click="deleteMultipleImages()" class="btn btn-warning m-3">slet markeret</button>
+        <div class="d-inline-flex flex-column align-items-center w-100">
+            <!-- <div class="display-6 mb-5 text-center">Galleri</div> -->
+            <!-- ADMIN -->
+            <div v-if="user.loggedIn" class="row">
+                <div class="d-flex justify-content-center align-items-center flex-column">
+                    <input type="file" multiple @change="getFilesOnChange" class="mb-1">
+                    <button v-show="hasFiles" @click="uploadImages($event)" class="btn btn-warning m-3">upload</button>
+                    <button v-if="hasDeletedImages" @click="deleteMultipleImages()" class="btn btn-warning m-3">Slet
+                        markeret ({{ deleteImages.length }})</button>
+                </div>
             </div>
-            <template v-if="images.length > 0">
-                <div class="row" v-if="this.hasLoaded">
-                    <template v-for="(image, index) in images" :key="index">
-                        <GalleryImage v-if="user.loggedIn" :imgUrl="image.url" :title="image.name" @deleteImage="deleteImage(image.name)" @selectMultipleImages="selectMultipleImages(image, $event)"></GalleryImage>
-                        <GalleryImage v-else :imgUrl="image.url" :title="image.name"></GalleryImage>
+            <template v-if="images.length >= 0">
+                <div class="row" data-masonry='{"percentPosition": true }' v-if="!loading">
+                    <div v-if="error.hasError">
+                        {{ error.message }}
+                    </div>
+                    <template v-for="(image, index) in fetchImages()" :key="index">
+                        <!-- ADMIN -->
+                        <GalleryImage v-if="user.loggedIn" :imgUrl="image.url" :title="image.name"
+                            :modalTarget="'#modal-target' + index" @deleteImage="deleteImage(image.name)"
+                            @selectMultipleImages="selectMultipleImages(image, $event)"></GalleryImage>
+                        <GalleryImage v-else :imgUrl="image.url" :title="image.name"
+                            :modalTarget="'#modal-target' + index"></GalleryImage>
+                        <!-- full image modal -->
+                        <div class="modal fade" :id="'modal-target' + index">
+                            <div class="modal-dialog modal-fullscreen d-flex justify-content-center">
+                                <div class="d-flex row justify-content-center align-items-center">
+                                    <img :src="image.url" class="img-fluid p-10 modal-image">
+                                </div>
+                            </div>
+                        </div>
                     </template>
                 </div>
                 <div class="spinner-border" role="status" v-else>
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </template>
-            <div v-else class="text-center mt-5">
+            <div v-if="!hasImages" class="text-center mt-5">
                 Ingen billeder tilføjet endnu
             </div>
         </div>
     </div>
 </template>
 <script>
-    import GalleryImage from '@/components/GalleryImage.vue';
+    import GalleryImage from '@/components/GalleryImage.vue'
 
     export default {
         name: "galleri-route",
@@ -34,20 +53,48 @@
                 hasLoaded: false,
                 files: [],
                 deleteImages: [],
-                isAdded: false
+                error: {
+                    message: "",
+                    hasError: false
+                },
+                modalTarget: ""
             }
         },
 
         components: {
-            GalleryImage
+            GalleryImage,
         },
 
         methods: {
-            uploadImages() {
-                this.$store.dispatch('uploadImages', {
-                    files: this.files
-                })
-                this.files = []
+            fetchImages() {
+                try {
+                    return this.images
+                } catch (e) {
+                    console.log(e)
+                    setTimeout(() => {
+                        window.alert(e)
+                        this.hasLoaded = true
+                        this.error.hasError = true
+                        this.error.message = e
+                    }, 5000)
+                }
+            },
+
+            async uploadImages() {
+                try {
+                    this.hasLoaded = false
+                    await this.$store.dispatch('uploadImages', {
+                        files: this.files
+                    })
+                    this.files = []
+                    this.hasLoaded = true
+                } catch (e) {
+                    console.log(e)
+                    setTimeout(() => {
+                        window.alert(e)
+                        this.hasLoaded = true
+                    }, 5000)
+                }
             },
 
             deleteImage(imageName) {
@@ -56,33 +103,53 @@
                 })
             },
 
-            deleteMultipleImages() {
-                this.$store.dispatch('deleteImages', {
-                    images: this.deleteImages
-                })
-                this.deleteImages = []
+            async deleteMultipleImages() {
+                try {
+                    this.hasLoaded = false
+                    await this.$store.dispatch('deleteImages', {
+                        images: this.deleteImages
+                    })
+                    this.deleteImages = []
+                    this.hasLoaded = true
+                } catch (e) {
+                    console.log(e)
+                    setTimeout(() => {
+                        window.alert(e)
+                        this.hasLoaded = true
+                    }, 5000)
+                }
             },
 
+            // TODO: change fethcing of iamgeNode
             selectMultipleImages(image, event) {
                 const index = this.deleteImages.indexOf(image)
-
+                // should hit image node - will fail if change of html
+                const imageNode = event.target.parentNode.parentNode.childNodes[1]
+                console.log(imageNode)
                 if (index === -1) {
                     this.deleteImages.push(image)
-                    event.target.style.opacity = "0.5"
+                    // event.target.style.opacity = "0.5"
+                    imageNode.style.opacity = "0.5"
                 } else {
                     this.deleteImages.splice(index, 1)
-                    event.target.style.opacity = "1"
+                    // event.target.style.opacity = "1"
+                    imageNode.style.opacity = "1"
+                    console.log(imageNode)
                 }
-            },  
+            },
 
             getFilesOnChange(event) {
                 this.files = event.target.files
-            }
+            },
         },
 
         computed: {
             images() {
                 return this.$store.getters.images
+            },
+
+            hasImages() {
+                return this.images.length > 0
             },
 
             user() {
@@ -95,6 +162,10 @@
 
             hasFiles() {
                 return this.files.length > 0
+            },
+
+            loading() {
+                return !this.hasLoaded
             }
         },
 
@@ -108,9 +179,11 @@
 </script>
 
 <style scoped>
-
     .spinner-border {
         margin-top: 100px;
     }
 
+    .modal-image {
+        padding: 0px !important;
+    }
 </style>

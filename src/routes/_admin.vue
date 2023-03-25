@@ -32,7 +32,6 @@
                         email: this.email,
                         password: this.password
                     })
-                    window.alert("Du er nu logget ind som " + this.email)
                 } catch(e) {
                     window.alert(e)
                 }
@@ -50,6 +49,6 @@
     }
 </script>
 
-<style>
+<style scoped>
 
 </style>

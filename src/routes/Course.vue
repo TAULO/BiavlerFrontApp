@@ -134,11 +134,11 @@
         </div>
         <div class="">
             <div class="notecard-cointainer">
-                <NoteCard category="obs" title="Tilmelding" description="Man tilmelder sig kursus i praktisk biavl ved at indbetale kursusgebyr og evt. kontingent ved
+                <NoteCard category="1" title="Tilmelding" description="Man tilmelder sig kursus i praktisk biavl ved at indbetale kursusgebyr og evt. kontingent ved
                 bankoverførsel, give besked til <br> <b>Vagn Brogaard brogaardvagn@hotmail.com <br> 29-90-20-37</b> <br> eller
                 blot møde op til første kursusaften, hvis man er lidt i tvivl.">
                 </NoteCard>
-                <NoteCard category="obs" title="Betaling" description="Kursusstedet er foreningens skolebigård,
+                <NoteCard category="2" title="Betaling" description="Kursusstedet er foreningens skolebigård,
                 Sdr. Højrupvejen 104A, Søllinge, 5750 Ringe
                 (skolebigården ligger bag ved forsamlingshuset)
                 <b>Pris 600 kr.</b> <br>
@@ -146,7 +146,7 @@
                 Foreningens bank: <br> reg. nr: 1551 - konto nr: 7034024.
                 <b>Husk at skrive navn, mail adresse, telefon nr. og besked om, hvad der betales for. </b>">
                 </NoteCard>
-                <NoteCard category="obs" title="Husk" description="NB – 25 % af pesttilfældene i Danmark relaterer sig til skolebigårde,
+                <NoteCard category="3" title="Husk" description="NB – 25 % af pesttilfældene i Danmark relaterer sig til skolebigårde,
                 så det er nødvendigt, at du anskaffer <b>vaskbare gummihandsker</b>, som kun bruges i
                 skolebigården.">
                 </NoteCard>

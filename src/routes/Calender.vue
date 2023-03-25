@@ -2,13 +2,15 @@
     <div class="container d-flex flex-column align-items-center">
         <div class="display-6 mb-5 text-center">Kommende begivenheder (under udvikling)</div>
         <button v-if="user.loggedIn" class="btn btn-warning m-3" data-bs-toggle="modal"
-            data-bs-target="#addEventModal">Tilføj ny begivenhed
+            data-bs-target="#addEventModal" @click="openAddEventModal()">Tilføj ny begivenhed
         </button>
+        <!-- modal -->
         <div class="modal modal-lg fade" id="addEventModal">
             <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="addEventModal">Tilføj ny begivenhed</h1>
+                        <h1 v-if="!this.shouldUpdate" class="modal-title fs-5" id="addEventModal">Tilføj ny begivenhed</h1>
+                        <h1 v-else class="modal-title fs-5" id="addEventModal">Opdater begivenhed</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -21,9 +23,9 @@
                             <span class="input-group-text" id="basic-addon1">Start tidspunkt</span>
                             <input type="datetime-local" class="form-control" aria-label="Username"
                                 aria-describedby="basic-addon1" v-model="event.startDate">
-                            <span class="input-group-text" id="basic-addon1">Slut tidspunkt (optimal)</span>
-                            <input type="datetime-local" class="form-control" aria-label="Username"
-                                aria-describedby="basic-addon1" v-model="event.endDate">
+                            <!-- <span class="input-group-text" id="basic-addon1">Slut tidspunkt (optimal)</span> -->
+                            <!-- <input type="datetime-local" class="form-control" aria-label="Username"
+                                aria-describedby="basic-addon1" v-model="event.endDate"> -->
                         </div>
                         <div class="input-group">
                             <span class="input-group-text">Beskrivelse</span>
@@ -32,7 +34,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Luk</button>
-                        <button type="button" class="btn btn-warning" @click="addEvent()">Tilføj</button>
+                        <button v-if="!this.shouldUpdate" type="button" class="btn btn-warning" @click="addEvent()">Tilføj</button>
+                        <button v-else type="button" class="btn btn-warning" @click="updateEvent()">Ændre</button>
                     </div>
                 </div>
             </div>
@@ -42,9 +45,7 @@
                 <div class="dropdown">
                     <span class="input-group-text filter-span"><i class="bi bi-filter-circle"></i></span>
                     <div class="filter-items ms-4">
-                        <div>Seneste</div>
-                        <div>1</div>
-                        <div>1</div>
+                        <div class="filter-item m-1 btn d-flex">Seneste</div>
                     </div>
                 </div>
                 <div class="input-group me-4 search-input">
@@ -53,29 +54,12 @@
                 </div>
             </div>
             <template v-if="hasEvents">
-                <div class="m-4 card p-1" v-for="(event, index) in events" :key="index">
-                    <div class="card-body whitespace-fix">
-                        <div class="d-flex justify-content-end" v-if="user.loggedIn"
-                            @click="deleteEvent(event.id, event.title)">
-                            <i class="bi bi-trash-fill position-absolute"></i>
-                        </div>
-                        <h5 class="card-title">
-                            {{ event.title }}
-                        </h5>
-                        <div class="d-flex" v-if="event.endDate !== null">
-                            <h6 class="card-subtitle mb-2 text-muted">{{ event.startDate?.replace("T", " ") }}</h6>
-                            <h6 class="card-subtitle text-muted mx-1">til</h6>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ event.endDate?.replace("T", " ") }}</h6>
-                        </div>
-                        <h6 v-else class="card-subtitle mb-2 text-muted">{{ event.startDate?.replace("T", " ") }}</h6>
-                        <p class="card-text">
-                            {{ event.description }}
-                        </p>
-                    </div>
-                </div>
+                <template v-for="(event, index) in events" :key="index">
+                    <CalendarEvent :id="event.id" :title="event.title" :startDate="event.startDate" :endDate="event.endDate" :description="event.description" @deleteEvent="deleteEvent(event.id, event.title)" @openUpdateModal="openUpdateModal(event.id)"></CalendarEvent>
+                </template>
             </template>
             <div v-else class="text-center mt-5">
-                Ingen begivenhed tilføjet endnu
+                Ingen begivenheder tilføjet endnu
             </div>
         </div>
         <div class="spinner-border" role="status" v-else>
@@ -84,11 +68,18 @@
     </div>
 </template>
 <script>
+    import CalendarEvent from '@/components/CalendarEvent.vue'
+
     export default {
         name: "calender-route",
+        components: {
+            CalendarEvent
+        },
+
         data() {
             return {
                 hasLoaded: false,
+                shouldUpdate: false,
                 event: {
                     title: "",
                     startDate: null,
@@ -113,8 +104,11 @@
             }
         },
 
-        // TODO: move add event methods to state 
         methods: {
+            async getEvent(docId) {
+                return await this.$store.dispatch('getEvent', { docId })
+            },
+
             addEvent() {
                 const {
                     title,
@@ -128,7 +122,6 @@
                     endDate,
                     description
                 })
-                this.clearInputFields()
             },
 
             deleteEvent(docId, eventTitle) {
@@ -139,8 +132,39 @@
                 }
             },
 
+            updateEvent() {
+                const {
+                    id,
+                    title,
+                    startDate,
+                    endDate,
+                    description
+                } = this.event
+                console.log()
+                this.$store.dispatch('updateEvent', {
+                    docId: id,
+                    title,
+                    startDate,
+                    endDate,
+                    description
+                })
+                this.clearInputFields()
+            },  
+
+            openAddEventModal() {
+                this.shouldUpdate = false
+                this.clearInputFields()
+            },
+
+            async openUpdateModal(docId) {
+                this.shouldUpdate = true
+                const currEvent = await this.getEvent(docId)
+                this.event =  { ...currEvent, id: docId }
+            },
+
             clearInputFields() {
                 this.event = {
+                    id: "",
                     title: "",
                     startDate: null,
                     endDate: null,
@@ -170,10 +194,6 @@
     i:hover {
         opacity: 0.5;
         cursor: pointer;
-    }
-
-    .whitespace-fix {
-        white-space: pre-line;
     }
 
     textarea {
@@ -211,6 +231,10 @@
         min-width: 160px;
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
         z-index: 1;
+    }
+
+    .filter-item:hover {
+        opacity: 0.5;
     }
 
     .dropdown:hover .filter-items {

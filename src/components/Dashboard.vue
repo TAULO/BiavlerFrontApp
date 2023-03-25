@@ -42,7 +42,7 @@
         data() {
             return {
                 active: {
-                    about: true,
+                    about: false,
                     course: false,
                     calender: false,
                     committee: false,
@@ -52,10 +52,12 @@
                 }
             }
         },
+
         components: {
             DashboardItem,
             IconLink
         },
+
         methods: {
             setNavActive() {
                 this.active = {
@@ -63,6 +65,19 @@
                 }
                 this.active[this.$route.name] = true
             }
+        },
+
+        mounted() {
+            setTimeout(() => {
+                if (this.$route.name === 'home') {
+                    this.active = {
+                    ...this.active = false
+                } 
+                    this.active['about'] = true
+                } else {
+                    this.setNavActive()
+                }
+            }, 500)
         }
     }
 </script>
@@ -115,6 +130,16 @@
     .bee {
         width: 50px; 
         height: 50px;
+    }
+
+    .fb-icon-link:hover {
+        color: #4267B2;
+        opacity: 1!important;
+    }
+
+    .instagram-icon-link:hover {
+        color: #C13584;
+        opacity: 0.8!important;
     }
 
     /* media-q for smaller screen sizes */
