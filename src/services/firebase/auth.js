@@ -1,17 +1,25 @@
-import { initializeApp } from "firebase/app";
+import { app } from './firebaseInit'
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth"
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBtHuZxVsR36yNaAMOwuzoi-PkZJEAQ7bo",
-  authDomain: "biavlerforening-66d6d.firebaseapp.com",
-  projectId: "biavlerforening-66d6d",
-  storageBucket: "biavlerforening-66d6d.appspot.com",
-  messagingSenderId: "1075343159849",
-  appId: "1:1075343159849:web:467c654f3a5c9cd0ea2238",
-  measurementId: "G-RG0VSSFG70"
-};
-
-const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 
-export { app, auth, onAuthStateChanged, signInWithEmailAndPassword, signOut } 
+// returns true or false whether not user succeded to log in
+async function logIn(email, password) {
+    try {
+      return await signInWithEmailAndPassword(auth, email, password)
+    } catch (e) {
+      console.log(e)
+      throw ('Der skete en fejl ved login. Kig efter korrekt e-mail eller password og prøv igen.')
+    }
+}
+
+async function logOut() {
+    try {
+        await signOut(auth)
+        console.log("user logged out")
+    } catch(e) {
+        throw "Der skete en fejl ved logud"
+    }
+}
+
+export { app, auth, onAuthStateChanged, signInWithEmailAndPassword, signOut, logIn, logOut } 
