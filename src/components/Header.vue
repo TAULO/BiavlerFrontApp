@@ -3,6 +3,7 @@
         <div v-if="user.loggedIn">
             Du er logget ind som: {{ user.data.email }}
         </div>
+        <!-- <hr> -->
         <img src="../assets/flyingBee.png" alt="" class="bee float-end">
     </header>
 </template>
@@ -23,6 +24,11 @@
         height: 100px;
         transform: rotate(260deg);
         width: auto;
+        z-index: 999;
+    }
+
+    hr {
+        transform: translateY(66px);
     }
 
     header {

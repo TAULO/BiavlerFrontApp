@@ -1,8 +1,8 @@
 <template>
-    <div class="card mb-3 w-75">
+    <div class="card mb-3">
         <div class="row no-gutters">
             <div class="col-lg-4 d-flex align-items-center justify-content-center ">
-                <img src="../assets/bee.png" alt="...">
+                <img src="../assets/bee.png" alt="..." class="">
             </div>
             <div class="col-lg-8">
                 <div class="card-body d-flex flex-column align-items-center">
@@ -38,7 +38,7 @@
     }
 
     img {
-        height: 200px;
+        height: 150px;
         width: auto;
         margin-bottom: 30px;
     }

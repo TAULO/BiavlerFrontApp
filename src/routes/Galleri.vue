@@ -12,7 +12,7 @@
                 </div>
             </div>
             <template v-if="images.length >= 0">
-                <div class="row" data-masonry='{"percentPosition": true }' v-if="!loading">
+                <div class="row" v-if="!loading">
                     <div v-if="error.hasError">
                         {{ error.message }}
                     </div>

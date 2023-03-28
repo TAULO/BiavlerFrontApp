@@ -1,5 +1,5 @@
 <template>
-    <div class="col-lg-4 col-md-12 mb-4">
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
         <div class="d-flex justify-content-end position-relative" v-if="user.loggedIn"
             @click="$emit('selectMultipleImages', $event)">
             <i class="bi bi-x-circle-fill m-2 me-3 fs-2 position-absolute text-warning delete-icon"></i>
