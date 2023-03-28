@@ -89,7 +89,6 @@
                     this.files = []
                     this.hasLoaded = true
                 } catch (e) {
-                    console.log(e)
                     setTimeout(() => {
                         window.alert(e)
                         this.hasLoaded = true

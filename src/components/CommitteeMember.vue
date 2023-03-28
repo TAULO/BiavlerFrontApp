@@ -23,6 +23,7 @@
             name: String,
             role: String,
             bio: String,
+            imgSrc: String,
             email: String
         }
     }

@@ -1,6 +1,7 @@
 <template>
     <div class="container d-flex flex-column align-items-center">
         <div class="display-6 mb-5 text-center">Kommende begivenheder (under udvikling)</div>
+        <!-- ADMIN -->
         <button v-if="user.loggedIn" class="btn btn-warning m-3" data-bs-toggle="modal"
             data-bs-target="#addEventModal" @click="openAddEventModal()">Tilføj ny begivenhed
         </button>
@@ -15,22 +16,23 @@
                     </div>
                     <div class="modal-body">
                         <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon1">Overskrift</span>
+                            <span class="input-group-text" id="basic-addon1" style="min-width: 135px;">Overskrift</span>
                             <input type="text" class="form-control" aria-label="Username" v-model="event.title"
                                 aria-describedby="basic-addon1">
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon1">Start tidspunkt</span>
+                            <span class="input-group-text" id="basic-addon1" style="min-width: 135px;">Start tidspunkt</span>
                             <input type="datetime-local" class="form-control" aria-label="Username"
                                 aria-describedby="basic-addon1" v-model="event.startDate">
-                            <!-- <span class="input-group-text" id="basic-addon1">Slut tidspunkt (optimal)</span> -->
-                            <!-- <input type="datetime-local" class="form-control" aria-label="Username"
+                            <!-- <span class="input-group-text" id="basic-addon1">Slut tidspunkt (optimal)</span>
+                            <input type="datetime-local" class="form-control" aria-label="Username"
                                 aria-describedby="basic-addon1" v-model="event.endDate"> -->
                         </div>
                         <div class="input-group">
-                            <span class="input-group-text">Beskrivelse</span>
+                            <span class="input-group-text" style="min-width: 135px;">Beskrivelse</span>
                             <textarea class="form-control" v-model="event.description"></textarea>
                         </div>
+                        <CalendarEvent :id="event.id" :title="event.title || 'Title'" :startDate="event.startDate || Date.now()" :endDate="event.endDate" :description="event.description || '...'"></CalendarEvent>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Luk</button>
