@@ -1,6 +1,5 @@
 <template>
     <div class="card m-4 p-3">
-        <!-- <div class="card-header bg-warning text-white">Kursus</div> -->
         <div class="card-body whitespace-fix">
             <!-- ADMIN -->
             <div class="d-flex justify-content-end" v-if="user.loggedIn">
