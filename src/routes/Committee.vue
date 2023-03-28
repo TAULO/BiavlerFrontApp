@@ -1,5 +1,5 @@
 <template>
-    <div class="container d-flex flex-column align-items-center">
+    <div class="container align-items-center">
         <h2 class="display-6 mb-5 text-center">Bestyrrelse (under udvikling)</h2>
         <!-- ADMIN -->
         <button v-if="user.loggedIn" class="btn btn-warning m-3" data-bs-toggle="modal"
@@ -37,10 +37,10 @@
                             <!-- <label class="input-group-text btn btn-secondary border-1" for="files">vælg billede</label> -->
                             <input id="files" type="file" @change="getFilesOnChange($event)" >
                         </div>
-                        <div class="d-flex flex-column justify-content-center align-content-center">
+                        <div class="d-flex flex-column">
                             <p>Forhåndsvisning:</p>
-                            <div class="">
-                                <CommitteeMember :name=this.committeeMember.name :role="this.committeeMember.role" :bio="this.committeeMember.bio" :email="this.committeeMember.email" :image=imgSrc></CommitteeMember>
+                            <div class="col-lg-6">
+                                <CommitteeMember :name="this.committeeMember.name || 'Navn'" :role="this.committeeMember.role || 'Rolle'" :bio="this.committeeMember.bio || 'Bio'" :email="this.committeeMember.email || 'email@mail.dk'" :image="this.committeeMember.imgSrc || '../assets/bee.png'"></CommitteeMember>
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,11 @@
                 </div>
             </div>
         </div>
-        <CommitteeMember name="Eksempel" role="Bestyrelsesmedlem" bio="Bio" email="foo@gmail.com" image="Bee.png"></CommitteeMember>
+        <div class="row d-flex justify-items-center">
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                <CommitteeMember :name="this.committeeMember.name || 'Navn'" :role="this.committeeMember.role || 'Rolle'" :bio="this.committeeMember.bio || 'Bio'" :email="this.committeeMember.email || 'eksempel@mail.dk'" :image="this.committeeMember.imgSrc || '../assets/bee.png'"></CommitteeMember>
+            </div>
+        </div>
     </div>
 </template>
 <script>

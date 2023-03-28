@@ -1,18 +1,19 @@
 <template>
-    <div class="card mb-3">
-        <div class="row no-gutters">
-            <div class="col-lg-4 d-flex align-items-center justify-content-center ">
-                <img src="../assets/bee.png" alt="..." class="">
+    <div class="card mb-3 text-center">
+       <img class="card-img-top" :src="imgSrc" alt="">
+       <div class="card-body">
+            <h4 class="card-title">
+                {{ name }}
+            </h4>
+            <div class="card-subtitle text-muted">
+                {{ role }}
             </div>
-            <div class="col-lg-8">
-                <div class="card-body d-flex flex-column align-items-center">
-                    <h5 class="card-title">{{ name }}</h5>
-                    <p class="card-text">{{ role }}</p>
-                    <p class="card-text">{{ bio }}</p>
-                    <p class="card-text mt-lg-5"><small class="text-muted">{{ email }}</small></p>
-                </div>
-            </div>
-        </div>
+            <hr>
+            <p>{{ bio }}</p>
+       </div>
+       <div class="card-booter text-muted">
+            {{ email }}
+       </div>
     </div>
 </template>
 <script>
@@ -49,7 +50,7 @@
         }
 
         .card {
-            width: 100%!important;
+            /* width: 100%!important; */
             font-size: small;
         }
     }
