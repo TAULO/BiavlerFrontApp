@@ -32,7 +32,7 @@
                             <span class="input-group-text" style="min-width: 135px;">Beskrivelse</span>
                             <textarea class="form-control" v-model="event.description"></textarea>
                         </div>
-                        <CalendarEvent :id="event.id" :title="event.title || 'Title'" :startDate="event.startDate || Date.now()" :endDate="event.endDate" :description="event.description || '...'"></CalendarEvent>
+                        <CalendarEvent :id="event.id" :title="event.title || 'Title'" :startDate="event.startDate" :endDate="event.endDate" :description="event.description || '...'"></CalendarEvent>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Luk</button>
@@ -111,17 +111,16 @@
                 return await this.$store.dispatch('getEvent', { docId })
             },
 
-            addEvent() {
+            async addEvent() {
                 const {
                     title,
                     startDate,
-                    endDate,
                     description
                 } = this.event
-                this.$store.dispatch('addEvent', {
+
+                await this.$store.dispatch('addEvent', {
                     title,
                     startDate,
-                    endDate,
                     description
                 })
             },
@@ -139,17 +138,9 @@
                     id,
                     title,
                     startDate,
-                    endDate,
                     description
                 } = this.event
-                console.log()
-                this.$store.dispatch('updateEvent', {
-                    docId: id,
-                    title,
-                    startDate,
-                    endDate,
-                    description
-                })
+                this.$store.dispatch('updateEvent', {docId: id, title, startDate, description })
                 this.clearInputFields()
             },  
 

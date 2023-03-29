@@ -10,14 +10,14 @@
             <h5 class="card-title">
                 {{ title }}
             </h5>
-            <div class="d-flex" v-if="endDate === null || endDate === ''">
+            <div class="d-flex">
                 <h6 class="card-subtitle mb-4 text-muted">{{ dateConverter(startDate) }} </h6>
             </div>
-            <div v-else class="mb-4 d-flex flex-column">
+            <!-- <div v-else class="mb-4 d-flex flex-column">
                 <h6 class="card-subtitle text-muted">{{ dateConverter(startDate) }}</h6>
                 <h6 class="card-subtitle text-muted mx-1 m-2"></h6>
                 <h6 class="card-subtitle text-muted">{{ dateConverter(endDate) }}</h6>
-            </div>
+            </div> -->
             <p class="card-text">
                 {{ description }}
             </p>

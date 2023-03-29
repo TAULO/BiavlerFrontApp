@@ -127,11 +127,9 @@
                 console.log(imageNode)
                 if (index === -1) {
                     this.deleteImages.push(image)
-                    // event.target.style.opacity = "0.5"
                     imageNode.style.opacity = "0.5"
                 } else {
                     this.deleteImages.splice(index, 1)
-                    // event.target.style.opacity = "1"
                     imageNode.style.opacity = "1"
                     console.log(imageNode)
                 }
