@@ -43,8 +43,8 @@
                         </div>
                         <div class="d-flex flex-column">
                             <p>Forhåndsvisning:</p>
-                            <div class="col-6 justify-self-center">
-                                <RecipeCard :name="recipe.name || 'Navn'" :prepTime="recipe.prepTime || '0'" :ingredients="recipe.ingredients || '0'" :portions="recipe.portions || '0'" :courseOfAction="recipe.courseOfAction || '1... \n 2... \n 3...'" :imgFile="recipe.imgFile || 'https://zippypaws.com/app/uploads/2018/05/strawberry-waffles-1024x668.jpg'" alt=""></RecipeCard>
+                            <div class="col-5 justify-self-center">
+                                <RecipeCard :name="recipe.name || 'Navn'" :prepTime="recipe.prepTime || '0'" :ingredients="recipe.ingredients || '0'" :portions="recipe.portions || '0'" :courseOfAction="recipe.courseOfAction || '1... \n 2...'" :imgFile="recipe.imgFile || 'https://zippypaws.com/app/uploads/2018/05/strawberry-waffles-1024x668.jpg'" alt="" :shouldOverflow="false"></RecipeCard>
                             </div>
                         </div>
                     </div>
@@ -58,8 +58,8 @@
         </div>
         <!-- recipes -->
         <div class="row justify-content-center">
-            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                <RecipeCard name="Example" prepTime="20" ingredients="8" portions="4-5" courseOfAction="bla bla bla..." imgFile="https://zippypaws.com/app/uploads/2018/05/strawberry-waffles-1024x668.jpg" alt=""></RecipeCard>
+            <div class="col-xl-4 col-lg-5 col-md-12 col-sm-12">
+                <RecipeCard name="Example" prepTime="20" ingredients="8" portions="4-5" courseOfAction="1." imgFile="https://zippypaws.com/app/uploads/2018/05/strawberry-waffles-1024x668.jpg" alt="" :shouldOverflow="true"></RecipeCard>
             </div>
         </div>
     </div>

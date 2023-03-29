@@ -34,7 +34,7 @@ async function addEvent(title, startDate, endDate, description) {
 async function deleteEvent(docId) {
   const docRef = doc(db, calendarCol, docId)
   await deleteDoc(docRef)
-    .then(() => console.log("document deleted with id: " + docId))
+    .then(() => console.log("Document deleted with id: " + docId))
     .catch(e => console.log("Error deleting event:", e))
 }
 
