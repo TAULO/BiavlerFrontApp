@@ -1,6 +1,14 @@
 <template>
     <div class="card mb-3 text-center">
-       <img class="card-img-top" :src="imgSrc" alt="">
+         <!-- ADMIN -->
+        <div class="d-flex justify-content-end" v-if="user.loggedIn">
+            <i class="bi bi-arrow-clockwise position-absolute" style="margin-right: 10%; margin-top: 2%;"
+                data-bs-toggle="modal" data-bs-target="#addEventModal"></i>
+            <i class="bi bi-trash-fill position-absolute" style="margin-right: 2%; margin-top: 2%;"></i>
+        </div>
+        <div class="">
+            <img class="card-img-top rounded-circle" src="https://randomuser.me/api/portraits/men/62.jpg" alt="">
+        </div>
        <div class="card-body">
             <h4 class="card-title">
                 {{ name }}
@@ -11,7 +19,7 @@
             <hr>
             <p>{{ bio }}</p>
        </div>
-       <div class="card-booter text-muted">
+       <div class="card-booter text-muted mb-2">
             {{ email }}
        </div>
     </div>
@@ -19,6 +27,7 @@
 <script>
     export default {
         name: "committee-member-component",
+
         props: {
             image: String,
             name: String,
@@ -26,7 +35,13 @@
             bio: String,
             imgSrc: String,
             email: String
-        }
+        },
+
+        computed: {
+            user() {
+                return this.$store.getters.user
+            },
+        },
     }
 </script>
 
@@ -42,6 +57,11 @@
         height: 150px;
         width: auto;
         margin-bottom: 30px;
+    }
+
+    i:hover {
+        opacity: 0.5;
+        cursor: pointer;
     }
 
     @media only screen and (max-width: 500px) {
