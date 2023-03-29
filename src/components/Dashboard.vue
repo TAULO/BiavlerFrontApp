@@ -2,7 +2,7 @@
     <div class="dashboard d-flex flex-column flex-shrink-0 bg-gradient">
         <router-link to="/" class="brand-style d-flex align-items-center mb-3 mb-md-0 me-md-auto test">
             <img src="../assets/bee.png" alt="" class="bee">
-            <div class="headline-text">
+            <div class="headline-text" @click="setHome()">
                 <span>RINGE OG OMEGNS <br> BIAVLERFORENING</span>
             </div>
         </router-link>
@@ -59,6 +59,13 @@
         },
 
         methods: {
+            setHome() {
+                this.active = {
+                    ...this.active = false
+                }
+                this.active['about'] = true
+            },
+
             setNavActive() {
                 this.active = {
                     ...this.active = false
@@ -70,10 +77,7 @@
         mounted() {
             setTimeout(() => {
                 if (this.$route.name === 'home') {
-                    this.active = {
-                    ...this.active = false
-                } 
-                    this.active['about'] = true
+                    this.setHome()
                 } else {
                     this.setNavActive()
                 }
