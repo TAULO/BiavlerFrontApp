@@ -19,6 +19,7 @@ import {
 
 import {
   getImagesUrl,
+  getImageURL,
   deleteImage,
   deleteImages,
   uploadImages,
@@ -118,15 +119,68 @@ const eventsModule = {
       context.commit('SET_EVENTS', await fetchDocuments("calendar"))
     },
 
-    async getEvent(context, {
-      docId
-    }) {
+    async getEvent(context, { docId }) {
       return fetchSingleDocument("calendar", docId)
     },
 
     async fetchEvents(context) {
       context.commit('SET_EVENTS', await fetchDocuments("calendar"))
     },
+  }
+}
+
+const committeeModule = {
+  state: {
+    committeeMembers: [{
+      name: "",
+      role: "",
+      bio: "",
+      email: "",
+      image: { name: "", url: "" },
+      id: ""
+    }]
+  },
+
+  getters: {
+    committeeMembers(state) {
+      return state.committeeMembers
+    }
+  },
+
+  mutations: {
+    SET_COMMITTEE_MEMBERS(state, data) {
+      state.committeeMembers = data
+    }
+  },
+
+  actions: {
+    async addCommitteeMember(context, data) {
+      await addDocument("CommitteeMember", data)
+      context.commit("SET_COMMITTEE_MEMBERS", await fetchDocuments("CommitteeMember"))
+    },
+
+    async deleteCommitteeMember(context, docId, imageName) {
+      await deleteDocument("CommitteeMember", docId)
+      context.commit("SET_COMMITTEE_MEMBERS", await fetchDocuments("CommitteeMember"))
+      context.dispatch('deleteImage', {storagePath: 'CommitteeMembers/', imageName })
+    },
+
+    async updateCommitteeMember(context, data) {
+      console.log(data)
+      const { docId } = data 
+      const { name, role, bio, email, image } = data 
+      await updateDocument('CommitteeMember', docId, { name, role, bio, email, image })
+      context.commit('SET_COMMITTEE_MEMBERS', await fetchDocuments('CommitteeMember'))
+    },
+
+    async getCommiteeMember(context, { docId }) {
+      return await fetchSingleDocument("CommitteeMember", docId)
+    },
+
+    async fetchCommitteeMembers(context) {
+      context.commit('SET_COMMITTEE_MEMBERS', await fetchDocuments('CommitteeMember'))
+      console.log(await fetchDocuments('CommitteeMember'))
+    }
   }
 }
 
@@ -137,19 +191,26 @@ const storageModule = {
       url: ""
     }]
   },
+
   getters: {
     images(state) {
       return state.images
     }
   },
+
   mutations: {
     SET_IMAGES(state, data) {
       state.images = data
     }
   },
+
   actions: {
     async getImagesUrl(context, storagePath) {
       context.commit('SET_IMAGES', await getImagesUrl(storagePath))
+    },
+
+    async getImageURL(context, { storagePath, imageName }) {
+      return await getImageURL({ storagePath, imageName })
     },
 
     async uploadImages(context, { storagePath, files }) {
@@ -185,6 +246,7 @@ const store = createStore({
   modules: {
     authModule,
     eventsModule,
+    committeeModule,
     storageModule
   }
 })
