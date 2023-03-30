@@ -165,7 +165,7 @@
                 return !this.hasLoaded
             }
         },
-
+        
         created() {
             this.$store.dispatch('getImagesUrl', { storagePath: 'Gallery/' })
                 .then(() => {

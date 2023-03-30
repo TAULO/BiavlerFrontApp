@@ -140,7 +140,7 @@
                     startDate,
                     description
                 } = this.event
-                this.$store.dispatch('updateEvent', {docId: id, title, startDate, description })
+                this.$store.dispatch('updateEvent', { docId: id, title, startDate, description })
                 this.clearInputFields()
             },  
 
