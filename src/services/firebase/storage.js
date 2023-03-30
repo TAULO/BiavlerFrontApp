@@ -11,31 +11,6 @@ import {
 const storage = getStorage(app);
 const storageRef = ref(storage)
 
-// const galleryRef = ref(storageRef, 'Gallery/');
-// const committeeMembersRef = ref(storageRef, "CommitteeMembers/")
-// const recipesRef = ref(storageRef, "Recipes/")
-
-// async function uploadImages(files) {
-//     try {
-//         if (!files || typeof files !== 'object') {
-//             throw "Fejl"
-//         }
-//         for (let i = 0; i < files.length; i++) {
-//             const imageRef = ref(storageRef, "Gallery/" + files[i].name)
-//             const metadata = {
-//                 name: files[i].name,
-//                 size: files[i].size,
-//                 contentType: files[i].type
-//             }
-//             await uploadBytes(imageRef, files[i], metadata)
-//         } 
-//     } catch(e) {
-//         console.log(e)
-//         throw "Noget gik galt ved upload af billederne"
-//     }
-// }
-
-// works like a charm 
 async function uploadImages(storagePath, files) {
     try {
         if (!files || typeof files !== 'object') {
@@ -94,8 +69,8 @@ async function deleteImages(storagePath, images) {
 
 
 async function getImagesUrl({ storagePath }) {
-    const path = ref(storageRef, storagePath);
     try {
+        const path = ref(storageRef, storagePath);
         const images = []
         const items = (await listAll(path)).items
         for (let i = 0; i < items.length; i++) {
@@ -113,9 +88,24 @@ async function getImagesUrl({ storagePath }) {
     }
 }
 
+async function getImageURL({ storagePath, imageName }) {
+    try {
+        const path = ref(storageRef, storagePath);
+        const url = await getDownloadURL(ref(path, imageName))
+        return {
+            name: imageName,
+            url
+        }
+    } catch(e) {
+        console.log(e)
+        throw "Noget gik galt ved hentning af billederne"
+    }
+}
+
 
 export {
     getImagesUrl,
+    getImageURL,
     uploadImages,
     deleteImage,
     deleteImages,
