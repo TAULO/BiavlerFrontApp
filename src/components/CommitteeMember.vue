@@ -2,12 +2,14 @@
     <div class="card mb-3 text-center">
          <!-- ADMIN -->
         <div class="d-flex justify-content-end" v-if="user.loggedIn">
-            <i class="bi bi-arrow-clockwise position-absolute" style="margin-right: 10%; margin-top: 2%;"
-                data-bs-toggle="modal" data-bs-target="#addEventModal"></i>
-            <i class="bi bi-trash-fill position-absolute" style="margin-right: 2%; margin-top: 2%;"></i>
+            <i class="bi bi-arrow-clockwise position-absolute" data-bs-toggle="modal" data-bs-target="#committeeModal" @click="$emit('openUpdateModal', id)" style="margin-right: 10%; margin-top: 2%;"></i>
+            <i class="bi bi-trash-fill position-absolute" style="margin-right: 2%; margin-top: 2%;" @click="$emit('deleteCommitteeMember', id, name, image)"></i>
         </div>
         <div class="">
-            <img class="card-img-top rounded-circle" src="https://randomuser.me/api/portraits/men/62.jpg" alt="">
+            <div  v-if="hasLoadedpreviewImage" class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <img v-else class="card-img-top rounded-circle" :src="previewImage ?? image" alt="">
         </div>
        <div class="card-body">
             <h4 class="card-title">
@@ -29,12 +31,15 @@
         name: "committee-member-component",
 
         props: {
+            hasLoadedpreviewImage: Boolean,
+            previewImage: String,
+
             image: String,
             name: String,
             role: String,
             bio: String,
-            imgSrc: String,
-            email: String
+            email: String,
+            id: String
         },
 
         computed: {
