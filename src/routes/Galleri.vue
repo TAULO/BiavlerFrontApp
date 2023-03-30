@@ -84,6 +84,7 @@
                 try {
                     this.hasLoaded = false
                     await this.$store.dispatch('uploadImages', {
+                        storagePath: 'Gallery/',
                         files: this.files
                     })
                     this.files = []
@@ -98,6 +99,7 @@
 
             deleteImage(imageName) {
                 this.$store.dispatch('deleteImage', {
+                    storagePath: 'Gallery/',
                     imageName
                 })
             },
@@ -105,9 +107,7 @@
             async deleteMultipleImages() {
                 try {
                     this.hasLoaded = false
-                    await this.$store.dispatch('deleteImages', {
-                        images: this.deleteImages
-                    })
+                    await this.$store.dispatch('deleteImages', { storagePath: 'Gallery/', images: this.deleteImages })
                     this.deleteImages = []
                     this.hasLoaded = true
                 } catch (e) {
@@ -167,7 +167,7 @@
         },
 
         created() {
-            this.$store.dispatch('getImagesUrl')
+            this.$store.dispatch('getImagesUrl', { storagePath: 'Gallery/' })
                 .then(() => {
                     this.hasLoaded = true
                 })

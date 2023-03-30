@@ -40,21 +40,21 @@
                         <div class="d-flex flex-column justify-self-center">
                             <p>Forhåndsvisning:</p>
                             <div class="col-lg-5">
-                                <CommitteeMember :name="this.committeeMember.name || 'Navn'" :role="this.committeeMember.role || 'Rolle'" :bio="this.committeeMember.bio || 'Bio'" :email="this.committeeMember.email || 'eksempel@mail.dk'" :image="this.committeeMember.imgSrc || 'https://randomuser.me/api/portraits/men/62.jpg'"></CommitteeMember>
+                                <CommitteeMember :name="this.committeeMember.name || 'Navn'" :role="this.committeeMember.role || 'Rolle'" :bio="this.committeeMember.bio || 'Bio'" :email="this.committeeMember.email || 'eksempel@mail.dk'" :image="this.committeeMember.imgFile|| 'https://randomuser.me/api/portraits/men/62.jpg'"></CommitteeMember>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Luk</button>
                         <button class="btn btn-warning" @click="addCommitteeMember()">Tilføj</button>
-                        <!-- <button class="btn btn-warning">Ændre</button> -->
+                        <button class="btn btn-warning" @click="uploadImages()">Test</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-10">
-                <CommitteeMember :name="this.committeeMember.name || 'Navn'" :role="this.committeeMember.role || 'Rolle'" :bio="this.committeeMember.bio || 'Bio'" :email="this.committeeMember.email || 'eksempel@mail.dk'" :image="this.committeeMember.imgSrc || 'https://randomuser.me/api/portraits/men/62.jpg'"></CommitteeMember>
+                <CommitteeMember :name="this.committeeMember.name || 'Navn'" :role="this.committeeMember.role || 'Rolle'" :bio="this.committeeMember.bio || 'Bio'" :email="this.committeeMember.email || 'eksempel@mail.dk'" :image="'https://randomuser.me/api/portraits/men/62.jpg'"></CommitteeMember>
             </div>
         </div>
     </div>
@@ -67,6 +67,7 @@
 
         data() {
             return {
+                hasLoaded: false,
                 committeeMember: {
                     name: "",
                     role: "",
@@ -86,6 +87,10 @@
             user() {
                 return this.$store.getters.user
             },
+
+            images() {
+                return this.$store.getters.images
+            },
         },
 
         methods: {
@@ -93,8 +98,50 @@
                 console.log(this.committeeMember)
             },
 
-            getFilesOnChange(event) {
-                this.committeeMember.imgFile = event.target.files[0]
+            getFilesOnChange() {
+                this.committeeMember.imgFile = this.fetchImage()[0]
+                // this.uploadImages()
+                // console.log(this.fetchImage())
+                console.log(this.committeeMember.imgFile)
+            },
+
+            async uploadImages() {
+                try {
+                    this.hasLoaded = false
+                    await this.$store.dispatch('uploadImages', {
+                        storagePath: 'CommitteeMembers/',
+                        files: this.committeeMember.imgFile
+                    })
+                    this.committeeMember.imgFile = []
+                    this.hasLoaded = true
+                } catch (e) {
+                    setTimeout(() => {
+                        window.alert(e)
+                        this.hasLoaded = true
+                    }, 5000)
+                }
+            },
+
+            fetchImage() {
+                try {
+                    return this.images
+                } catch (e) {
+                    console.log(e)
+                    setTimeout(() => {
+                        window.alert(e)
+                        this.hasLoaded = true
+                        this.error.hasError = true
+                        this.error.message = e
+                    }, 5000)
+                }
+            },
+
+            created() {
+                this.$store.dispatch('getImagesUrl', { storagePath: 'CommitteeMembers/' })
+                    .then(() => {
+                        this.hasLoaded = true
+                })
+    
             }
         }
     }

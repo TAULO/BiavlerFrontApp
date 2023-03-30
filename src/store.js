@@ -19,10 +19,9 @@ import {
 
 import {
   getImagesUrl,
-  uploadImages,
   deleteImage,
   deleteImages,
-  newUploadImages
+  uploadImages,
 } from './services/firebase/storage';
 
 const authModule = {
@@ -116,7 +115,7 @@ const eventsModule = {
       const { docId } = data
       const { title, startDate, description } = data 
       updateDocument("calendar", docId, { title, startDate, description })
-      context.commit('SET_EVENTS', await await fetchDocuments("calendar"))
+      context.commit('SET_EVENTS', await fetchDocuments("calendar"))
     },
 
     async getEvent(context, {
@@ -149,34 +148,35 @@ const storageModule = {
     }
   },
   actions: {
-    async getImagesUrl(context) {
-      context.commit('SET_IMAGES', await getImagesUrl())
+    async getImagesUrl(context, storagePath) {
+      context.commit('SET_IMAGES', await getImagesUrl(storagePath))
     },
 
-    async uploadImages(context, {
-      files
-    }) {
-      await uploadImages(files)
-      context.commit('SET_IMAGES', await getImagesUrl())
+    async uploadImages(context, { storagePath, files }) {
+      if (storagePath && files) {
+        await uploadImages(storagePath, files)
+        context.commit('SET_IMAGES', await getImagesUrl({ storagePath }))
+      } else {
+        throw "err in upload images"
+      }
     },
 
-    async newUploadImages(context, { files }) {
-     await newUploadImages("Recipes/", files)
-     context.commit('SET_IMAGES', await getImagesUrl())
+    async deleteImage(context, { storagePath, imageName }) {
+      if (storagePath && imageName) {
+          await deleteImage(storagePath, imageName)
+          context.commit('SET_IMAGES', await getImagesUrl({ storagePath }))
+      } else {
+        throw 'err in delete image'
+      }
     },
 
-    async deleteImage(context, {
-      imageName
-    }) {
-      await deleteImage(imageName)
-      context.commit('SET_IMAGES', await getImagesUrl())
-    },
-
-    async deleteImages(context, {
-      images
-    }) {
-      await deleteImages(images)
-      context.commit('SET_IMAGES', await getImagesUrl())
+    async deleteImages(context, { storagePath, images }) {
+      if (storagePath && images) {
+        await deleteImages(storagePath, images)
+        context.commit('SET_IMAGES', await getImagesUrl({ storagePath }))
+      } else {
+        throw 'err in delete multiple images'
+      }
     }
   }
 }
