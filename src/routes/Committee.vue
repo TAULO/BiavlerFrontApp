@@ -1,17 +1,17 @@
 <template>
     <div class="container d-flex flex-column">
-        <h2 class="display-6 mb-5 text-center">Bestyrrelse (under udvikling)</h2>
+        <h2 class="display-6 mb-5 text-center">Bestyrelse (under udvikling)</h2>
         <!-- ADMIN -->
         <button v-if="user.loggedIn" class="btn btn-warning m-3 align-self-center" data-bs-toggle="modal"
-            data-bs-target="#committeeModal">Tilføj ny bestyrrelsesmedlem
+            data-bs-target="#committeeModal" @click="openCreateModal()">Tilføj ny bestyrelsesmedlem
         </button>
         <!-- modal -->
         <div class="modal fade modal-lg" id="committeeModal">
             <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 v-if="!shouldUpdate" class="modal-title fs-5" id="committeeModal">Tilføj ny bestyrrelsesmedlem</h1>
-                        <h1 v-else class="modal-title fs-5" id="committeeModal">Opdater bestyrrelsesmedlem</h1>
+                        <h1 v-if="!shouldUpdate" class="modal-title fs-5" id="committeeModal">Tilføj ny bestyrelsesmedlem</h1>
+                        <h1 v-else class="modal-title fs-5" id="committeeModal">Opdater bestyrelsesmedlem</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -41,7 +41,7 @@
                         <div class="d-flex flex-column justify-self-center">
                             <p>Forhåndsvisning:</p>
                             <div class="col-lg-5">
-                                <CommitteeMember :name="this.committeeMember.name || 'Navn'" :role="this.committeeMember.role || 'Rolle'" :bio="this.committeeMember.bio || 'Bio'" :email="this.committeeMember.email || 'eksempel@mail.dk'" :previewImage="previewImage.url || this.committeeMember.image.url" :hasLoadedpreviewImage="this.hasLoadedpreviewImage"></CommitteeMember>
+                                <CommitteeMember :name="this.committeeMember.name || 'Navn'" :role="this.committeeMember.role || 'Rolle'" :bio="this.committeeMember.bio || 'Bio'" :email="this.committeeMember.email || 'eksempel@mail.dk'" :hasLoadedImage="hasLoadedImage" :image="this.previewImage?.url"></CommitteeMember>
                             </div>
                         </div>
                     </div>
@@ -55,8 +55,8 @@
         </div>
         <div v-if="hasCommitteeMembers" class="row justify-content-center">
             <template v-for="(member, index) in committeeMembers" :key="index">
-                <div v-if="hasLoaded" class="col-xl-4 col-lg-4 col-md-6 col-sm-10">
-                    <CommitteeMember :name="member.name" :role="member.role" :bio="member.bio" :email="member.email" :image="member.image?.url" :id="member.id" @deleteCommitteeMember="deleteCommitteeMember(member.id, member.name, member.image)" @openUpdateModal="openUpdateModal(member.id)"></CommitteeMember>
+                <div v-if="hasLoaded" class="col-xl-4 col-lg-5 col-md-10 col-sm-10">
+                    <CommitteeMember :name="member.name" :role="member.role" :bio="member.bio" :email="member.email" :image="member.image.url" :id="member.id" :hasLoadedImage="this.hasLoadedImage" @deleteCommitteeMember="deleteCommitteeMember(member.id, member.name, member.image)" @openUpdateModal="openUpdateModal(member.id)"></CommitteeMember>
                 </div>
                 <div v-else class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -76,16 +76,17 @@
 
         data() {
             return {
+                tempFileArr: [],
                 shouldUpdate: false,
                 hasLoaded: false,
-                hasLoadedpreviewImage: false,
-                previewImage: { name: "", url: "" },
+                hasLoadedImage: false,
+                previewImage: {},
                 committeeMember: {
                     name: "",
                     role: "",
                     bio: "",
                     email: "",
-                    image: { name: "", url: "" },
+                    image: {},
                     id: ""
                 },
             }
@@ -117,20 +118,28 @@
             async addCommitteeMember() {
                 this.shouldUpdate = false
                 let { name, role, bio, email, image } = this.committeeMember
+
+                // returns the last item of array, which is the one I need
+                // image = this.tempFileArr.pop()
                 image = this.previewImage
 
-                await this.$store.dispatch('addCommitteeMember', {
+                // context.dispatch('uploadImages', { storagePath: 'CommitteeMembers/', files: image })
+                this.$store.dispatch('addCommitteeMember', {
                     name,
                     role,
                     bio,
                     email,
                     image
+                }).then(async () => {
+                    await this.$store.dispatch('deleteImages', {
+                        storagePath: 'CommitteeMembers',
+                        files: this.tempFileArr
+                    })
+                    this.clearInputFields()
                 })
-                this.clearInputFields()
             },
 
             async deleteCommitteeMember(docId, name, image) {
-                console.log(name, image)
                 await this.$store.dispatch('deleteCommitteeMember', {
                     docId,
                     imageName: image.name
@@ -138,8 +147,7 @@
             },
             
             async updateCommitteeMember() {
-                let { id, name, role, bio, email, image } = this.committeeMember
-                image = this.previewImage
+                const { id, name, role, bio, email, image } = this.committeeMember
                 await this.$store.dispatch('updateCommitteeMember', {
                     docId: id,
                     name,
@@ -156,34 +164,21 @@
             },
 
             changeImageOnChange(event) {
-                const imgFile = event.target.files[0]
-                this.hasLoadedpreviewImage = true
-                this.uploadImage(imgFile).then(async () => {
-                    let currImg = await this.getImageURL(imgFile.name)
-                    this.previewImage = currImg
-                    this.hasLoadedpreviewImage = false     
+                this.previewImage = event.target.files[0]
+                this.hasLoadedImage = true
+                this.$store.dispatch('uploadImages', {
+                    storagePath: 'CommitteeMembers',
+                    files: this.previewImage
+                }).then(async () => {
+                    this.hasLoadedImage = true
+                    const currFileURL = await this.$store.dispatch('getImageURL', {
+                        storagePath: 'CommitteeMembers',
+                        imageName: this.previewImage.name
+                    })
+                    this.hasLoadedImage = false
+                    this.tempFileArr.push(this.previewImage)
+                    this.previewImage = currFileURL
                 })
-            },
-
-            async getImageURL(imageName) {
-                return await this.$store.dispatch('getImageURL', {
-                        storagePath: 'CommitteeMembers/',
-                        imageName
-                    })
-            },
-
-            async uploadImage(files) {
-                try {
-                    await this.$store.dispatch('uploadImages', {
-                        storagePath: 'CommitteeMembers/',
-                        files
-                    })
-                } catch (e) {
-                    setTimeout(() => {
-                        window.alert(e)
-                        this.hasLoaded = true
-                    }, 5000)
-                }
             },
 
             fetchImage() {
@@ -200,10 +195,17 @@
                 }
             },
 
+            openCreateModal() {
+                this.shouldUpdate = false
+                this.clearInputFields()
+            }, 
+
             async openUpdateModal(docId) {
                 this.shouldUpdate = true
                 const currMember = await this.getCommitteeMember(docId)
                 this.committeeMember = { ...currMember, id: docId }
+                const { image } = this.committeeMember
+                this.previewImage = image
             }, 
 
             clearInputFields() {
@@ -212,7 +214,7 @@
                     role: "",
                     bio: "",
                     email: "",
-                    image: { name: "", url: "" },
+                    image: {},
                     id: ""
                 }
             }

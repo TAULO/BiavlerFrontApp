@@ -2,15 +2,16 @@
     <div class="card mb-3 text-center">
          <!-- ADMIN -->
         <div class="d-flex justify-content-end" v-if="user.loggedIn">
-            <i class="bi bi-arrow-clockwise position-absolute" data-bs-toggle="modal" data-bs-target="#committeeModal" @click="$emit('openUpdateModal', id)" style="margin-right: 10%; margin-top: 2%;"></i>
+            <!-- <i class="bi bi-arrow-clockwise position-absolute" data-bs-toggle="modal" data-bs-target="#committeeModal" @click="$emit('openUpdateModal', id)" style="margin-right: 10%; margin-top: 2%;"></i> -->
             <i class="bi bi-trash-fill position-absolute" style="margin-right: 2%; margin-top: 2%;" @click="$emit('deleteCommitteeMember', id, name, image)"></i>
         </div>
-        <div class="">
-            <div  v-if="hasLoadedpreviewImage" class="spinner-border" role="status">
+        <!-- image -->
+        <div v-if="hasLoadedImage" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <img v-else class="card-img-top rounded-circle" :src="previewImage ?? image" alt="">
         </div>
+        <img v-else class="card-img-top rounded-circle align-self-center shadow-sm" :src="image" alt="">
        <div class="card-body">
             <h4 class="card-title">
                 {{ name }}
@@ -31,8 +32,8 @@
         name: "committee-member-component",
 
         props: {
-            hasLoadedpreviewImage: Boolean,
-            previewImage: String,
+            hasLoadedImage: Boolean,
+            isPreview: Boolean,
 
             image: String,
             name: String,
@@ -59,9 +60,10 @@
     }
 
     img {
-        height: 150px;
+        height: 130px;
         width: auto;
-        margin-bottom: 30px;
+        object-fit: cover;
+        border: 4px solid #fff;
     }
 
     i:hover {
@@ -80,12 +82,12 @@
         }
     }
 
-    @media only screen and (max-width: 1100px) {
+    /* @media only screen and (max-width: 1100px) {
         img {
-            height: 100px;
+            height: 130px;
             width: auto;
             margin-bottom: 30px;
         }
-    }
+    } */
 
 </style>
