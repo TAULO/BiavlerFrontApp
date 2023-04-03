@@ -55,7 +55,6 @@ async function deleteImage(storagePath, imageName) {
 
 async function deleteImages(storagePath, images) {
     try {
-        console.log(storagePath)
         for (let i = 0; i < images.length; i++) {
             const imageName = images[i].name
             const imageRef = ref(storageRef, storagePath + imageName)

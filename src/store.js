@@ -136,7 +136,7 @@ const committeeModule = {
       role: "",
       bio: "",
       email: "",
-      image: { name: "", url: "" },
+      image: {},
       id: ""
     }]
   },
@@ -159,14 +159,13 @@ const committeeModule = {
       context.commit("SET_COMMITTEE_MEMBERS", await fetchDocuments("CommitteeMember"))
     },
 
-    async deleteCommitteeMember(context, docId, imageName) {
-      await deleteDocument("CommitteeMember", docId)
+    async deleteCommitteeMember(context, { docId, imageName }) {
+      await deleteDocument("CommitteeMember", { docId })
+      context.dispatch('deleteImage', { storagePath: 'CommitteeMembers/', imageName })
       context.commit("SET_COMMITTEE_MEMBERS", await fetchDocuments("CommitteeMember"))
-      context.dispatch('deleteImage', {storagePath: 'CommitteeMembers/', imageName })
     },
 
     async updateCommitteeMember(context, data) {
-      console.log(data)
       const { docId } = data 
       const { name, role, bio, email, image } = data 
       await updateDocument('CommitteeMember', docId, { name, role, bio, email, image })
@@ -179,7 +178,60 @@ const committeeModule = {
 
     async fetchCommitteeMembers(context) {
       context.commit('SET_COMMITTEE_MEMBERS', await fetchDocuments('CommitteeMember'))
-      console.log(await fetchDocuments('CommitteeMember'))
+    }
+  }
+}
+
+const recipesModule = {
+  recipes: {
+    recipes: [{
+      name: "",
+      prepTime: "",
+      ingredients: "",
+      portions: "",
+      courseOfAction: "",
+      image: { }
+   }]
+  },
+
+  getters: {
+    recipes(state) {
+      return state.recipes
+    }
+  },
+
+  mutations: {
+    SET_RECIPES(state, data) {
+      state.recipes = data
+    }
+  },
+
+  actions: {
+    async addRecipe(context, data) {
+      await addDocument("Recipe", data)
+      context.commit("SET_RECIPES", await fetchDocuments("Recipe"))
+    },
+
+    async deleteRecipe(context, docId, imageName) {
+      await deleteDocument("Recipe", docId)
+      context.commit("SET_RECIPES", await fetchDocuments("Recipe"))
+      context.dispatch('deleteImage', {storagePath: 'Recipe/', imageName })
+    },
+
+    async updateRecipe(context, data) {
+      console.log(data)
+      const { docId } = data 
+      const { name, role, bio, email, image } = data 
+      await updateDocument('Recipe', docId, { name, role, bio, email, image })
+      context.commit("SET_RECIPES", await fetchDocuments("Recipe"))
+    },
+
+    async getRecipe(context, { docId }) {
+      return await fetchSingleDocument("Recipe", docId)
+    },
+
+    async fetchRecipes(context) {
+      context.commit("SET_RECIPES", await fetchDocuments("Recipe"))
     }
   }
 }
@@ -223,21 +275,13 @@ const storageModule = {
     },
 
     async deleteImage(context, { storagePath, imageName }) {
-      if (storagePath && imageName) {
-          await deleteImage(storagePath, imageName)
-          context.commit('SET_IMAGES', await getImagesUrl({ storagePath }))
-      } else {
-        throw 'err in delete image'
-      }
+      await deleteImage(storagePath, imageName)
+      context.commit('SET_IMAGES', await getImagesUrl({ storagePath }))
     },
 
     async deleteImages(context, { storagePath, images }) {
-      if (storagePath && images) {
-        await deleteImages(storagePath, images)
-        context.commit('SET_IMAGES', await getImagesUrl({ storagePath }))
-      } else {
-        throw 'err in delete multiple images'
-      }
+      await deleteImages(storagePath, images)
+      context.commit('SET_IMAGES', await getImagesUrl({ storagePath }))
     }
   }
 }
@@ -247,7 +291,8 @@ const store = createStore({
     authModule,
     eventsModule,
     committeeModule,
-    storageModule
+    storageModule,
+    recipesModule
   }
 })
 
