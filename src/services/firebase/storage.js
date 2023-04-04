@@ -1,4 +1,6 @@
-import { app } from './firebaseInit'
+import {
+    app
+} from './firebaseInit'
 import {
     getStorage,
     ref,
@@ -16,28 +18,18 @@ async function uploadImages(storagePath, files) {
         if (!files || typeof files !== 'object') {
             throw console.log('err')
         }
-        if (files.length > 1) {
-            for (let i = 0; i < files.length; i++) {
-                const imageRef = ref(storageRef, `${storagePath}/${files[i].name}`)
-                const metadata = {
-                    name: files[i].name,
-                    size: files[i].size,
-                    contentType: files[i].type
-                }
-                await uploadBytes(imageRef, files[i], metadata)
-                console.log("Uploaded: " + files[i].name + " to " + storagePath)
-            }
-        } else {
-            const imageRef = ref(storageRef, `${storagePath}/${files.name}`)
+        // REMOVE IF ONLY 1 FILE
+        for (let i = 0; i < files.length; i++) {
+            const imageRef = ref(storageRef, `${storagePath}/${files[i].name}`)
             const metadata = {
-                name: files.name,
-                size: files.size,
-                contentType: files.type
+                name: files[i].name,
+                size: files[i].size,
+                contentType: files[i].type
             }
-            await uploadBytes(imageRef, files, metadata)
-            console.log("Uploaded: " + files.name + " to " + storagePath)
+            await uploadBytes(imageRef, files[i], metadata)
+            console.log("Uploaded: " + files[i].name + " to " + storagePath)
         }
-    } catch(e) {
+    } catch (e) {
         console.log(e)
         throw "Noget gik galt ved upload af billederne"
     }
@@ -47,7 +39,7 @@ async function deleteImage(storagePath, imageName) {
     try {
         const imageRef = ref(storageRef, storagePath + imageName)
         await deleteObject(imageRef)
-    } catch(e) {
+    } catch (e) {
         console.log(e)
         throw "Noget gik galt ved sletning af billedet"
     }
@@ -60,14 +52,16 @@ async function deleteImages(storagePath, images) {
             const imageRef = ref(storageRef, storagePath + imageName)
             await deleteObject(imageRef)
         }
-    } catch(e) {
+    } catch (e) {
         console.log(e)
         throw "Noget gik galt ved sletning af billederne"
     }
 }
 
 
-async function getImagesUrl({ storagePath }) {
+async function getImagesUrl({
+    storagePath
+}) {
     try {
         const path = ref(storageRef, storagePath);
         const images = []
@@ -81,13 +75,16 @@ async function getImagesUrl({ storagePath }) {
         }
         console.log(images)
         return images
-    } catch(e) {
+    } catch (e) {
         console.log(e)
         throw "Noget gik galt ved hentning af billederne"
     }
 }
 
-async function getImageURL({ storagePath, imageName }) {
+async function getImageURL({
+    storagePath,
+    imageName
+}) {
     try {
         const path = ref(storageRef, storagePath);
         const url = await getDownloadURL(ref(path, imageName))
@@ -95,7 +92,7 @@ async function getImageURL({ storagePath, imageName }) {
             name: imageName,
             url
         }
-    } catch(e) {
+    } catch (e) {
         console.log(e)
         throw "Noget gik galt ved hentning af billederne"
     }
