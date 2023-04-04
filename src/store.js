@@ -27,7 +27,7 @@ import {
   uploadImages,
 } from './services/firebase/storage';
 
-import { filter } from '@/services/firebase/uFuzzy'
+import { filter } from '@/services/uFuzzy'
 
 
 const authModule = {
@@ -129,7 +129,6 @@ const eventsModule = {
     },
 
     async fetchEvents(context) {
-      console.log(Collections)
       context.commit('SET_EVENTS', await fetchDocuments(Collections.CALENDAR))
     },
 
@@ -231,7 +230,6 @@ const recipesModule = {
     },
 
     async updateRecipe(context, data) {
-      console.log(data)
       const { docId } = data 
       const { name, role, bio, email, image } = data 
       await updateDocument(Collections.RECIPE, docId, { name, role, bio, email, image })
