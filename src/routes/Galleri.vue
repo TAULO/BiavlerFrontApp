@@ -11,7 +11,7 @@
                         markeret ({{ deleteImages.length }})</button>
                 </div>
             </div>
-            <template v-if="images.length >= 0">
+            <template v-if="hasImages">
                 <div class="row" v-if="!loading">
                     <div v-if="error.hasError">
                         {{ error.message }}
@@ -37,7 +37,7 @@
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </template>
-            <div v-if="!hasImages" class="text-center mt-5">
+            <div v-else class="text-center mt-5">
                 Ingen billeder tilføjet endnu
             </div>
         </div>

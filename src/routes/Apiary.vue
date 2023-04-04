@@ -1,6 +1,7 @@
 <template>
     <div class="container d-flex flex-column align-items-center text-center">
-        <div class="display-6 mb-5">Året i Bigården (under udvikling)</div>
+        <div class="display-6 mb-5">Året i Bigården</div>
+        <div>Kommer snart...</div>
         <!-- ADMIN -->
         <!-- <button v-if="user.loggedIn" class="btn btn-warning m-3" data-bs-toggle="modal"
             data-bs-target="#addCommitteeModal">Tilføj ny bestyrrelsesmedlem

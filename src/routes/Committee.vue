@@ -1,6 +1,6 @@
 <template>
     <div class="container d-flex flex-column">
-        <h2 class="display-6 mb-5 text-center">Bestyrelse (under udvikling)</h2>
+        <h2 class="display-6 mb-5 text-center">Bestyrelse</h2>
         <!-- ADMIN -->
         <button v-if="user.loggedIn" class="btn btn-warning m-3 align-self-center" data-bs-toggle="modal"
             data-bs-target="#committeeModal" @click="openCreateModal()">Tilføj ny bestyrelsesmedlem
@@ -64,7 +64,7 @@
             </template>
         </div>
         <div v-else class="d-flex justify-content-center">
-            Ingen bestyrrelsesmedlemmer tilføjet endnu
+            Ingen bestyrelsesmedlemmer tilføjet endnu
         </div>
     </div>
 </template>

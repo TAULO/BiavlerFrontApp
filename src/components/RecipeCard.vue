@@ -35,14 +35,14 @@
                     <div>Portioner</div>
                 </div>
             </div>
-            <p v-if="shouldOverflow" class="card-text my-4 overflow-fix"
+            <p v-if="!shouldOverflow" class="card-text my-4 overflow-fix"
                 style="white-space: pre-line; text-overflow: ellipsis;">
                 {{ courseOfAction }}
             </p>
             <p v-else class="card-text my-4" style="white-space: pre-line; text-overflow: ellipsis;">
                 {{ courseOfAction }}
             </p>
-            <div class="btn btn-warning w-50">
+            <div class="btn btn-warning w-50" data-bs-toggle="modal" data-bs-target="#seeRecipeModal">
                 Se opskrift
             </div>
         </div>
