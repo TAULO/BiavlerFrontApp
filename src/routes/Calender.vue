@@ -52,7 +52,7 @@
                 </div>
                 <div class="input-group me-4 search-input">
                     <span class="input-group-text search-span"><i class="bi bi-search"></i></span>
-                    <input class="form-control" placeholder="søg efter begivenheder">
+                    <input class="form-control" placeholder="søg efter begivenheder" @input="searchForEvents($event)">
                 </div>
             </div>
             <template v-if="hasEvents">
@@ -71,6 +71,7 @@
 </template>
 <script>
     import CalendarEvent from '@/components/CalendarEvent.vue'
+    // import { filter } from '@/services/firebase/uFuzzy'
 
     export default {
         name: "calender-route",
@@ -103,7 +104,7 @@
 
             hasEvents() {
                 return this.events.length > 0
-            }
+            },
         },
 
         methods: {
@@ -165,9 +166,10 @@
                 }
             },
 
-            searchForEvent(e) {
-                console.log(e)
-                // this.$store.dispatch('searcEventQuery', { title: this.event.title })
+            async searchForEvents(e) {
+                const needle = e.target.value
+                const searchKeyword = "title"
+                this.$store.dispatch('searchForEvents', { needle, searchKeyword })
             }
         },
 
@@ -198,7 +200,7 @@
     }
 
     .search-input {
-        width: 25%;
+        width: 35%;
         text-overflow: ellipsis;
     }
 

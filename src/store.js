@@ -25,6 +25,9 @@ import {
   uploadImages,
 } from './services/firebase/storage';
 
+import { filter } from '@/services/firebase/uFuzzy'
+
+
 const authModule = {
   state: {
     user: {
@@ -126,6 +129,12 @@ const eventsModule = {
     async fetchEvents(context) {
       context.commit('SET_EVENTS', await fetchDocuments("calendar"))
     },
+
+    async searchForEvents(context, { searchKeyword, needle }) {
+      const haystack = await fetchDocuments("calendar")
+      const filteredEvents = filter(haystack, searchKeyword, needle)
+      context.commit('SET_EVENTS', await filteredEvents)
+    }
   }
 }
 
