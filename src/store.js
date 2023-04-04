@@ -2,6 +2,8 @@ import {
   createStore
 } from 'vuex'
 
+import Collections from './services/firebase/constans/Collections';
+
 import {
   auth,
   onAuthStateChanged,
@@ -106,32 +108,33 @@ const eventsModule = {
   },
   actions: {
     async addEvent(context, data) {
-    addDocument("calendar", data)
-    context.commit('SET_EVENTS', await fetchDocuments("calendar"))
+    addDocument(Collections.CALENDAR, data)
+    context.commit('SET_EVENTS', await fetchDocuments(Collections.CALENDAR))
     },
 
     async deleteEvent(context, docId) {
-      deleteDocument("calendar", docId)
-      context.commit('SET_EVENTS', await fetchDocuments("calendar"))
+      deleteDocument(Collections.CALENDAR, docId)
+      context.commit('SET_EVENTS', await fetchDocuments(Collections.CALENDAR))
     },
 
     async updateEvent(context, data) {
       const { docId } = data
       const { title, startDate, description } = data 
-      updateDocument("calendar", docId, { title, startDate, description })
-      context.commit('SET_EVENTS', await fetchDocuments("calendar"))
+      updateDocument(Collections.CALENDAR, docId, { title, startDate, description })
+      context.commit('SET_EVENTS', await fetchDocuments(Collections.CALENDAR))
     },
 
     async getEvent(context, { docId }) {
-      return fetchSingleDocument("calendar", docId)
+      return fetchSingleDocument(Collections.CALENDAR, docId)
     },
 
     async fetchEvents(context) {
-      context.commit('SET_EVENTS', await fetchDocuments("calendar"))
+      console.log(Collections)
+      context.commit('SET_EVENTS', await fetchDocuments(Collections.CALENDAR))
     },
 
     async searchForEvents(context, { searchKeyword, needle }) {
-      const haystack = await fetchDocuments("calendar")
+      const haystack = await fetchDocuments(Collections.CALENDAR)
       const filteredEvents = filter(haystack, searchKeyword, needle)
       context.commit('SET_EVENTS', await filteredEvents)
     }
@@ -164,29 +167,29 @@ const committeeModule = {
 
   actions: {
     async addCommitteeMember(context, data) {
-      await addDocument("CommitteeMember", data)
-      context.commit("SET_COMMITTEE_MEMBERS", await fetchDocuments("CommitteeMember"))
+      await addDocument(Collections.COMMITEEMEMBER, data)
+      context.commit("SET_COMMITTEE_MEMBERS", await fetchDocuments(Collections.COMMITEEMEMBER))
     },
 
     async deleteCommitteeMember(context, { docId, imageName }) {
-      await deleteDocument("CommitteeMember", { docId })
+      await deleteDocument(Collections.COMMITEEMEMBER, { docId })
       context.dispatch('deleteImage', { storagePath: 'CommitteeMembers/', imageName })
-      context.commit("SET_COMMITTEE_MEMBERS", await fetchDocuments("CommitteeMember"))
+      context.commit("SET_COMMITTEE_MEMBERS", await fetchDocuments(Collections.COMMITEEMEMBER))
     },
 
     async updateCommitteeMember(context, data) {
       const { docId } = data 
       const { name, role, bio, email, image } = data 
-      await updateDocument('CommitteeMember', docId, { name, role, bio, email, image })
-      context.commit('SET_COMMITTEE_MEMBERS', await fetchDocuments('CommitteeMember'))
+      await updateDocument(Collections.COMMITEEMEMBER, docId, { name, role, bio, email, image })
+      context.commit('SET_COMMITTEE_MEMBERS', await fetchDocuments(Collections.COMMITEEMEMBER))
     },
 
     async getCommiteeMember(context, { docId }) {
-      return await fetchSingleDocument("CommitteeMember", docId)
+      return await fetchSingleDocument(Collections.COMMITEEMEMBER, docId)
     },
 
     async fetchCommitteeMembers(context) {
-      context.commit('SET_COMMITTEE_MEMBERS', await fetchDocuments('CommitteeMember'))
+      context.commit('SET_COMMITTEE_MEMBERS', await fetchDocuments(Collections.COMMITEEMEMBER))
     }
   }
 }
@@ -217,13 +220,13 @@ const recipesModule = {
 
   actions: {
     async addRecipe(context, data) {
-      await addDocument("Recipe", data)
-      context.commit("SET_RECIPES", await fetchDocuments("Recipe"))
+      await addDocument(Collections.RECIPE, data)
+      context.commit("SET_RECIPES", await fetchDocuments(Collections.RECIPE))
     },
 
     async deleteRecipe(context, docId, imageName) {
-      await deleteDocument("Recipe", docId)
-      context.commit("SET_RECIPES", await fetchDocuments("Recipe"))
+      await deleteDocument(Collections.RECIPE, docId)
+      context.commit("SET_RECIPES", await fetchDocuments(Collections.RECIPE))
       context.dispatch('deleteImage', {storagePath: 'Recipe/', imageName })
     },
 
@@ -231,16 +234,16 @@ const recipesModule = {
       console.log(data)
       const { docId } = data 
       const { name, role, bio, email, image } = data 
-      await updateDocument('Recipe', docId, { name, role, bio, email, image })
-      context.commit("SET_RECIPES", await fetchDocuments("Recipe"))
+      await updateDocument(Collections.RECIPE, docId, { name, role, bio, email, image })
+      context.commit("SET_RECIPES", await fetchDocuments(Collections.RECIPE))
     },
 
     async getRecipe(context, { docId }) {
-      return await fetchSingleDocument("Recipe", docId)
+      return await fetchSingleDocument(Collections.RECIPE, docId)
     },
 
     async fetchRecipes(context) {
-      context.commit("SET_RECIPES", await fetchDocuments("Recipe"))
+      context.commit("SET_RECIPES", await fetchDocuments(Collections.RECIPE))
     }
   }
 }
@@ -275,12 +278,8 @@ const storageModule = {
     },
 
     async uploadImages(context, { storagePath, files }) {
-      if (storagePath && files) {
         await uploadImages(storagePath, files)
         context.commit('SET_IMAGES', await getImagesUrl({ storagePath }))
-      } else {
-        throw "err in upload images"
-      }
     },
 
     async deleteImage(context, { storagePath, imageName }) {
