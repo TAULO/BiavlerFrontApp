@@ -4,7 +4,7 @@
         <div class="d-flex justify-content-end" v-if="user.loggedIn">
             <i class="bi bi-arrow-clockwise position-absolute" style="margin-right: 15%; margin-top: 5%;"
                 data-bs-toggle="modal" data-bs-target="#addEventModal"></i>
-            <i class="bi bi-trash-fill position-absolute" style="margin-right: 5%; margin-top: 5%;"></i>
+            <i class="bi bi-trash-fill position-absolute" style="margin-right: 5%; margin-top: 5%;"  @click="$emit('deleteRecipe')"></i>
         </div>
         <img class="card-img-top" :src="imgFile" :alt="alt">
         <div class="card-body">
@@ -21,14 +21,14 @@
                     <div>Minutter</div>
                 </div>
                 <div>
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center ms-1">
                         <i class="bi bi-book mx-1"></i>
-                        <div>{{ ingredients }}</div>
+                        <div>{{ ingredientsCount }}</div>
                     </div>
                     <div>Ingredienser</div>
                 </div>
                 <div>
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-end me-1">
                         <i class="bi bi-person mx-1"></i>
                         <div>{{ portions }}</div>
                     </div>
@@ -42,7 +42,7 @@
             <p v-else class="card-text my-4" style="white-space: pre-line; text-overflow: ellipsis;">
                 {{ courseOfAction }}
             </p>
-            <div class="btn btn-warning w-50" data-bs-toggle="modal" data-bs-target="#seeRecipeModal">
+            <div class="btn btn-warning w-50" data-bs-toggle="modal" :data-bs-target="'#' + seeRecipeModal">
                 Se opskrift
             </div>
         </div>
@@ -55,12 +55,15 @@
         props: {
             name: String,
             prepTime: String,
-            ingredients: String,
+            ingredientsCount: Number,
+            ingredients: Array,
             portions: String,
             courseOfAction: String,
             imgFile: String,
             alt: String,
-            shouldOverflow: Boolean
+            shouldOverflow: Boolean,
+            seeRecipeModal: String,
+            id: String
         },
 
         computed: {

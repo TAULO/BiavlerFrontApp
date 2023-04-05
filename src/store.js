@@ -29,7 +29,6 @@ import {
 
 import { filter } from '@/services/uFuzzy'
 
-
 const authModule = {
   state: {
     user: {
@@ -194,15 +193,17 @@ const committeeModule = {
 }
 
 const recipesModule = {
-  recipes: {
+  state: {
     recipes: [{
       name: "",
       prepTime: "",
-      ingredients: "",
+      ingredientsCount: 0,
+      ingredients: [],
       portions: "",
       courseOfAction: "",
-      image: { }
-   }]
+      image: {},
+      id: ""
+    }]
   },
 
   getters: {
@@ -223,10 +224,10 @@ const recipesModule = {
       context.commit("SET_RECIPES", await fetchDocuments(Collections.RECIPE))
     },
 
-    async deleteRecipe(context, docId, imageName) {
+    async deleteRecipe(context, docId) {
       await deleteDocument(Collections.RECIPE, docId)
       context.commit("SET_RECIPES", await fetchDocuments(Collections.RECIPE))
-      context.dispatch('deleteImage', {storagePath: 'Recipe/', imageName })
+      // context.dispatch('deleteImage', {storagePath: 'Recipe/', imageName })
     },
 
     async updateRecipe(context, data) {
@@ -301,6 +302,5 @@ const store = createStore({
     recipesModule
   }
 })
-
 
 export default store
