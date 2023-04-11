@@ -45,6 +45,7 @@
 </template>
 <script>
     import GalleryImage from '@/components/GalleryImage.vue'
+    import StoragePaths from '@/services/firebase/constans/StoragePaths';
     import { toastSuccess, toastError, toastWarning } from '../services/toasty.js'
 
     export default {
@@ -85,7 +86,7 @@
                 try {
                     this.hasLoaded = false
                     await this.$store.dispatch('uploadImages', {
-                        storagePath: 'Gallery/',
+                        storagePath: StoragePaths.GALLERY,
                         files: this.files
                     })
                     this.files = []
@@ -103,7 +104,7 @@
             deleteImage(imageName) {
                 try {
                     this.$store.dispatch('deleteImage', {
-                        storagePath: 'Gallery/',
+                        storagePath: StoragePaths.GALLERY,
                         imageName
                     })
                     toastWarning('Billede slettet')
@@ -115,7 +116,7 @@
             async deleteMultipleImages() {
                 try {
                     this.hasLoaded = false
-                    await this.$store.dispatch('deleteImages', { storagePath: 'Gallery/', images: this.deleteImages })
+                    await this.$store.dispatch('deleteImages', { storagePath: StoragePaths.GALLERY, images: this.deleteImages })
                     this.deleteImages = []
                     this.hasLoaded = true
                     toastWarning('Billeder slettet')
@@ -177,7 +178,7 @@
         },
         
         created() {
-            this.$store.dispatch('getImagesUrl', { storagePath: 'Gallery/' })
+            this.$store.dispatch('getImagesUrl', { storagePath: StoragePaths.GALLERY })
                 .then(() => {
                     this.hasLoaded = true
                 })

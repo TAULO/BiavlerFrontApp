@@ -71,6 +71,7 @@
 </template>
 <script>
     import CommitteeMember from '@/components/CommitteeMember.vue';
+    import StoragePaths from '@/services/firebase/constans/StoragePaths';
     import { toastSuccess, toastError, toastWarning } from '../services/toasty.js'
 
     export default {
@@ -134,7 +135,7 @@
                         image
                     }).then(async () => {
                         await this.$store.dispatch('deleteImages', {
-                            storagePath: 'CommitteeMembers',
+                            storagePath: StoragePaths.COMMITEEMEMBER,
                             files: this.tempFileArr
                         })
                         this.clearInputFields()
@@ -183,12 +184,12 @@
                 this.previewImage = event.target.files
                 this.hasLoadedImage = true
                 this.$store.dispatch('uploadImages', {
-                    storagePath: 'CommitteeMembers',
+                    storagePath: StoragePaths.COMMITEEMEMBER,
                     files: this.previewImage
                 }).then(async () => {
                     this.hasLoadedImage = true
                     const currFileURL = await this.$store.dispatch('getImageURL', {
-                        storagePath: 'CommitteeMembers',
+                        storagePath: StoragePaths.COMMITEEMEMBER,
                         imageName: this.previewImage[0].name
                     })
                     this.hasLoadedImage = false
