@@ -1,4 +1,4 @@
-const RECIPE = 'Recipe/'
+const RECIPE = 'Recipes/'
 const COMMITEEMEMBER = 'CommitteeMembers/'
 const GALLERY = 'Gallery/'
 
