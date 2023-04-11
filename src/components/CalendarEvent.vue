@@ -51,17 +51,22 @@
                     "September", "Oktober", "November", "December"
                 ];
 
+                // input date
                 const date = new Date(dateString)
                 const danishDay = danishDays[date.getDay()]
                 const danishMonth = danishMonths[date.getMonth()]
                 const dayOfMonth = date.getUTCDate()
                 const year = date.getUTCFullYear()
+                const month = date.getMonth()
                 const hours = date.getHours()
                 const minutes = date.getUTCMinutes()
 
-                const currDay = new Date(Date.now()).getUTCDate()
+                // current date
+                const currDate = new Date(Date.now())
+                const currDay = currDate.getDate()
+                const currMonth = currDate.getMonth()
 
-                if (dayOfMonth === currDay) {
+                if (currDay === dayOfMonth && currMonth === month) {
                     if (minutes !== 0) {
                         if (minutes < 10) {
                             return `I dag kl. ${hours}:0${minutes}`
@@ -73,12 +78,12 @@
                     }
                 } else if (minutes !== 0) {
                     if (minutes < 10) {
-                        return `${danishDay} den ${dayOfMonth} ${danishMonth} ${year} kl. ${hours}:0${minutes}`
+                        return `${danishDay} d. ${dayOfMonth} ${danishMonth} ${year} kl. ${hours}:0${minutes}`
                     } else {
-                        return `${danishDay} den ${dayOfMonth} ${danishMonth} ${year} kl. ${hours}:${minutes}`
+                        return `${danishDay} d. ${dayOfMonth} ${danishMonth} ${year} kl. ${hours}:${minutes}`
                     }
                 } else {
-                    return `${danishDay} den ${dayOfMonth} ${danishMonth} ${year} kl. ${hours}`
+                    return `${danishDay} d. ${dayOfMonth} ${danishMonth} ${year} kl. ${hours}`
                 }
             },
         },
