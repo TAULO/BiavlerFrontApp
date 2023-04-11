@@ -46,9 +46,9 @@
             <div class="d-flex justify-content-between">
                 <div class="dropdown">
                     <span class="input-group-text filter-span"><i class="bi bi-filter-circle"></i></span>
-                    <div class="filter-items ms-4">
+                    <!-- <div class="filter-items ms-4">
                         <div class="filter-item m-1 btn d-flex">Seneste</div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="input-group me-4 search-input">
                     <span class="input-group-text search-span"><i class="bi bi-search"></i></span>
@@ -71,7 +71,7 @@
 </template>
 <script>
     import CalendarEvent from '@/components/CalendarEvent.vue'
-    // import { filter } from '@/services/firebase/uFuzzy'
+    import { toastSuccess, toastError, toastWarning } from '../services/toasty.js'
 
     export default {
         name: "calender-route",
@@ -118,19 +118,29 @@
                     startDate,
                     description
                 } = this.event
-
-                await this.$store.dispatch('addEvent', {
-                    title,
-                    startDate,
-                    description
-                })
+                try {
+                    await this.$store.dispatch('addEvent', {
+                        title,
+                        startDate,
+                        description
+                    })
+                    this.clearInputFields()
+                    toastSuccess("Begivenhed tilføjet")
+                } catch(e) {
+                    toastError(e)
+                }
             },
 
             deleteEvent(docId, eventTitle) {
                 if (confirm("Er du sikker på at du vil slette " + eventTitle + "?")) {
-                    this.$store.dispatch('deleteEvent', {
-                        docId
-                    })
+                    try {
+                        this.$store.dispatch('deleteEvent', {
+                            docId
+                        })
+                        toastWarning('Begivenhed slettet')
+                    } catch(e) {
+                        toastError(e)
+                    }
                 }
             },
 
@@ -141,8 +151,13 @@
                     startDate,
                     description
                 } = this.event
-                this.$store.dispatch('updateEvent', { docId: id, title, startDate, description })
-                this.clearInputFields()
+                try {
+                    this.$store.dispatch('updateEvent', { docId: id, title, startDate, description })
+                    this.clearInputFields()
+                    toastSuccess("Begivenhed opdateret")
+                } catch(e) {
+                    toastError(e)
+                }
             },  
 
             openAddEventModal() {
@@ -166,7 +181,7 @@
                 }
             },
 
-            async searchForEvents(e) {
+            searchForEvents(e) {
                 const needle = e.target.value
                 const searchKeyword = "title"
                 this.$store.dispatch('searchForEvents', { needle, searchKeyword })

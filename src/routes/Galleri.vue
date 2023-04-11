@@ -45,6 +45,7 @@
 </template>
 <script>
     import GalleryImage from '@/components/GalleryImage.vue'
+    import { toastSuccess, toastError, toastWarning } from '../services/toasty.js'
 
     export default {
         name: "galleri-route",
@@ -89,19 +90,26 @@
                     })
                     this.files = []
                     this.hasLoaded = true
+                    toastSuccess('Billede(r) tilføet')
                 } catch (e) {
                     setTimeout(() => {
                         window.alert(e)
                         this.hasLoaded = true
+                        toastError(e)
                     }, 5000)
                 }
             },
 
             deleteImage(imageName) {
-                this.$store.dispatch('deleteImage', {
-                    storagePath: 'Gallery/',
-                    imageName
-                })
+                try {
+                    this.$store.dispatch('deleteImage', {
+                        storagePath: 'Gallery/',
+                        imageName
+                    })
+                    toastWarning('Billede slettet')
+                } catch(e) {
+                    toastError(e)
+                }
             },
 
             async deleteMultipleImages() {
@@ -110,11 +118,13 @@
                     await this.$store.dispatch('deleteImages', { storagePath: 'Gallery/', images: this.deleteImages })
                     this.deleteImages = []
                     this.hasLoaded = true
+                    toastWarning('Billeder slettet')
                 } catch (e) {
                     console.log(e)
                     setTimeout(() => {
                         window.alert(e)
                         this.hasLoaded = true
+                        toastError(e)
                     }, 5000)
                 }
             },

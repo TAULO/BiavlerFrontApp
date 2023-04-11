@@ -17,6 +17,8 @@
 </template>
 
 <script>
+    import { toastSuccess, toastError } from '../services/toasty.js'
+
     export default {
         name: "admin-route",
         data() {
@@ -32,13 +34,19 @@
                         email: this.email,
                         password: this.password
                     })
+                    toastSuccess('Logget ind som: ' + this.email)
                 } catch(e) {
-                    window.alert(e)
+                    toastError(e)
                 }
 
             },
             async signOut() {
-                await this.$store.dispatch('logOut')
+                try {
+                    await this.$store.dispatch('logOut')
+                    toastSuccess('Du er logget ud')
+                } catch(e) {
+                    toastError(e)
+                }
             }
         },
         computed: {

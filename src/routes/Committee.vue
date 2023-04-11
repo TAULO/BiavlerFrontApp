@@ -39,6 +39,7 @@
                             <input id="files" type="file" @change="changeImageOnChange($event)" >
                         </div>
                         <div class="d-flex flex-column justify-self-center">
+                            <!-- preview committeemember -->
                             <p>Forhåndsvisning:</p>
                             <div class="col-lg-5">
                                 <CommitteeMember :name="this.committeeMember.name || 'Navn'" :role="this.committeeMember.role || 'Rolle'" :bio="this.committeeMember.bio || 'Bio'" :email="this.committeeMember.email || 'eksempel@mail.dk'" :hasLoadedImage="hasLoadedImage" :image="this.previewImage?.url"></CommitteeMember>
@@ -70,6 +71,7 @@
 </template>
 <script>
     import CommitteeMember from '@/components/CommitteeMember.vue';
+    import { toastSuccess, toastError, toastWarning } from '../services/toasty.js'
 
     export default {
         name: "committee-route",
@@ -123,40 +125,54 @@
                 // image = this.tempFileArr.pop()
                 image = this.previewImage
 
-                // context.dispatch('uploadImages', { storagePath: 'CommitteeMembers/', files: image })
-                this.$store.dispatch('addCommitteeMember', {
-                    name,
-                    role,
-                    bio,
-                    email,
-                    image
-                }).then(async () => {
-                    await this.$store.dispatch('deleteImages', {
-                        storagePath: 'CommitteeMembers',
-                        files: this.tempFileArr
+                try {
+                    this.$store.dispatch('addCommitteeMember', {
+                        name,
+                        role,
+                        bio,
+                        email,
+                        image
+                    }).then(async () => {
+                        await this.$store.dispatch('deleteImages', {
+                            storagePath: 'CommitteeMembers',
+                            files: this.tempFileArr
+                        })
+                        this.clearInputFields()
                     })
-                    this.clearInputFields()
-                })
+                    toastSuccess("Bestyrelsesmedlem tilføjet")
+                } catch(e) {
+                    toastError(e)
+                }
             },
 
             async deleteCommitteeMember(docId, name, image) {
-                await this.$store.dispatch('deleteCommitteeMember', {
-                    docId,
-                    imageName: image.name
-                })
+                try {
+                    await this.$store.dispatch('deleteCommitteeMember', {
+                        docId,
+                        imageName: image.name
+                    })
+                    toastWarning('Bestyrelsesmedlem slettet')
+                } catch(e) {
+                    toastError(e)
+                }
             },
             
             async updateCommitteeMember() {
                 const { id, name, role, bio, email, image } = this.committeeMember
-                await this.$store.dispatch('updateCommitteeMember', {
-                    docId: id,
-                    name,
-                    role,
-                    bio,
-                    email,
-                    image
-                })
-                this.clearInputFields()
+                try {
+                    await this.$store.dispatch('updateCommitteeMember', {
+                        docId: id,
+                        name,
+                        role,
+                        bio,
+                        email,
+                        image
+                    })
+                    this.clearInputFields()
+                    toastSuccess("Bestyrelsesmedlem opdateret")
+                } catch(e) {
+                    toastError(e)
+                }
             },  
 
             async getCommitteeMember(docId) {
@@ -164,7 +180,7 @@
             },
 
             changeImageOnChange(event) {
-                this.previewImage = event.target.files[0]
+                this.previewImage = event.target.files
                 this.hasLoadedImage = true
                 this.$store.dispatch('uploadImages', {
                     storagePath: 'CommitteeMembers',
@@ -173,7 +189,7 @@
                     this.hasLoadedImage = true
                     const currFileURL = await this.$store.dispatch('getImageURL', {
                         storagePath: 'CommitteeMembers',
-                        imageName: this.previewImage.name
+                        imageName: this.previewImage[0].name
                     })
                     this.hasLoadedImage = false
                     this.tempFileArr.push(this.previewImage)
