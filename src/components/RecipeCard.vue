@@ -2,11 +2,17 @@
     <div class="card">
         <!-- ADMIN -->
         <div class="d-flex justify-content-end" v-if="user.loggedIn">
-            <i class="bi bi-arrow-clockwise position-absolute" style="margin-right: 15%; margin-top: 5%;"
-                data-bs-toggle="modal" data-bs-target="#addEventModal"></i>
-            <i class="bi bi-trash-fill position-absolute" style="margin-right: 5%; margin-top: 5%;"  @click="$emit('deleteRecipe')"></i>
+            <i class="bi bi-arrow-clockwise position-absolute" style="margin-right: 15%; margin-top: 5%;" @click="$emit('updateRecipe')"
+                data-bs-toggle="modal" data-bs-target="#addRecipeModal"></i>
+            <i class="bi bi-trash-fill position-absolute" style="margin-right: 5%; margin-top: 5%;"
+                @click="$emit('deleteRecipe')"></i>
         </div>
-        <img class="card-img-top" :src="imgFile" :alt="alt">
+        <div v-if="hasLoaded" class="d-flex justify-content-center mt-5">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <img v-else class="card-img-top" :src="imgFile" :alt="alt">
         <div class="card-body">
             <h4 class="card-title text-start">
                 {{ name }}
@@ -53,6 +59,7 @@
         name: "recipe-card-component",
 
         props: {
+            hasLoaded: Boolean,
             name: String,
             prepTime: String,
             ingredientsCount: Number,
