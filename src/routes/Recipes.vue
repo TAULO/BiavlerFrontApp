@@ -74,7 +74,7 @@
         </div>
 
         <!-- recipes -->
-        <div class="row justify-content-center w-100">
+        <div class="row justify-content-center w-100" v-if="hasRecipes">
             <template v-for="(recipe, index) in recipes" :key="index">
                 <!-- recipes -->
                 <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 col-12 mb-5">
@@ -181,6 +181,10 @@
 
             recipes() {
                 return this.$store.getters.recipes
+            },
+
+            hasRecipes() {
+                return this.recipes.length > 0
             },
 
             numberOfIngredients() {

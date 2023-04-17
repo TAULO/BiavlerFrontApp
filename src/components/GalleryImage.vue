@@ -1,12 +1,12 @@
 <template>
-    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+    <!-- <div class="col-lg-4 col-md-6 col-sm-12 mb-4"> -->
         <div class="d-flex justify-content-end position-relative" v-if="user.loggedIn"
             @click="$emit('selectMultipleImages', $event)">
             <i class="bi bi-x-circle-fill m-2 me-3 fs-2 position-absolute text-warning delete-icon"></i>
         </div>
         <img :src="imgUrl" class="w-100 shadow rounded" :alt="title" :data-bs-target="modalTarget"
-            data-bs-toggle="modal" />
-    </div>
+            data-bs-toggle="modal" :ref="imgUrl"/>
+    <!-- </div> -->
 </template>
 
 <script>
@@ -16,7 +16,7 @@
         props: {
             title: String,
             imgUrl: String,
-            modalTarget: String
+            modalTarget: String,
         },
 
         computed: {
@@ -33,11 +33,11 @@
         cursor: pointer;
     }
 
-    img {
-        /* max-height: 100px!important; */
+    /* img {
+        max-height: 100px!important;
         max-height: 400px;
         object-fit: cover;
-    }
+    } */
 
     img:hover {
         opacity: 0.5;

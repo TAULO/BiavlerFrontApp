@@ -16,22 +16,34 @@
                     <div v-if="error.hasError">
                         {{ error.message }}
                     </div>
-                    <template v-for="(image, index) in fetchImages()" :key="index">
-                        <!-- ADMIN -->
-                        <GalleryImage v-if="user.loggedIn" :imgUrl="image.url" :title="image.name"
+                    <!-- <template v-for="(image, index) in fetchImages()" :key="index"> -->
+                    <!-- ADMIN -->
+                    <!-- <GalleryImage v-if="user.loggedIn" :imgUrl="image.url" :title="image.name"
                             :modalTarget="'#modal-target' + index" @deleteImage="deleteImage(image.name)"
                             @selectMultipleImages="selectMultipleImages(image, $event)"></GalleryImage>
                         <GalleryImage v-else :imgUrl="image.url" :title="image.name"
-                            :modalTarget="'#modal-target' + index"></GalleryImage>
-                        <!-- full image modal -->
-                        <div class="modal fade" :id="'modal-target' + index">
-                            <div class="modal-dialog modal-fullscreen d-flex justify-content-center">
-                                <div class="d-flex row justify-content-center align-items-center">
-                                    <img :src="image.url" class="img-fluid p-10 modal-image">
+                            :modalTarget="'#modal-target' + index"></GalleryImage> -->
+                    <!-- full image modal -->
+                    <masonry-wall :items="fetchImages()" :column-width="300" :gap="16">
+                        <template #default="{ item, index }">
+                            <div>
+                                <!-- ADMIN -->
+                                <GalleryImage v-if="user.loggedIn" :imgUrl="item.url" :title="item.name" :ref="item.name"
+                                    :modalTarget="'#modal-target' + index" @deleteImage="deleteImage(item.name)"
+                                    @selectMultipleImages="selectMultipleImages(item, $event)"></GalleryImage>
+                                <GalleryImage v-else :imgUrl="item.url" :title="item.name"
+                                    :modalTarget="'#modal-target' + index"></GalleryImage>
+                            </div>
+                            <div class="modal fade" :id="'modal-target' + index">
+                                <div class="modal-dialog modal-fullscreen d-flex justify-content-center">
+                                    <div class="d-flex row justify-content-center align-items-center">
+                                        <img :src="item.url" class="img-fluid p-10 modal-image">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </template>
+                        </template>
+                    </masonry-wall>
+                    <!-- </template> -->
                 </div>
                 <div class="spinner-border" role="status" v-else>
                     <span class="visually-hidden">Loading...</span>
@@ -46,7 +58,11 @@
 <script>
     import GalleryImage from '@/components/GalleryImage.vue'
     import StoragePaths from '@/services/firebase/constans/StoragePaths';
-    import { toastSuccess, toastError, toastWarning } from '../services/toasty.js'
+    import {
+        toastSuccess,
+        toastError,
+        toastWarning
+    } from '../services/toasty.js'
 
     export default {
         name: "galleri-route",
@@ -108,7 +124,7 @@
                         imageName
                     })
                     toastWarning('Billede slettet')
-                } catch(e) {
+                } catch (e) {
                     toastError(e)
                 }
             },
@@ -116,7 +132,10 @@
             async deleteMultipleImages() {
                 try {
                     this.hasLoaded = false
-                    await this.$store.dispatch('deleteImages', { storagePath: StoragePaths.GALLERY, images: this.deleteImages })
+                    await this.$store.dispatch('deleteImages', {
+                        storagePath: StoragePaths.GALLERY,
+                        images: this.deleteImages
+                    })
                     this.deleteImages = []
                     this.hasLoaded = true
                     toastWarning('Billeder slettet')
@@ -130,19 +149,19 @@
                 }
             },
 
-            // TODO: change fethcing of iamgeNode
-            selectMultipleImages(image, event) {
+            // TODO: find a smarter solution for this
+            selectMultipleImages(image) {
                 const index = this.deleteImages.indexOf(image)
-                // should hit image node - will fail if change of html
-                const imageNode = event.target.parentNode.parentNode.childNodes[1]
-                console.log(imageNode)
+                const imageName = image.name
+                const imageUrl = image.url
+
+                const imageNode = this.$refs[imageName].$refs[imageUrl]
                 if (index === -1) {
                     this.deleteImages.push(image)
                     imageNode.style.opacity = "0.5"
                 } else {
                     this.deleteImages.splice(index, 1)
                     imageNode.style.opacity = "1"
-                    console.log(imageNode)
                 }
             },
 
@@ -176,9 +195,11 @@
                 return !this.hasLoaded
             }
         },
-        
+
         created() {
-            this.$store.dispatch('getImagesUrl', { storagePath: StoragePaths.GALLERY })
+            this.$store.dispatch('getImagesUrl', {
+                    storagePath: StoragePaths.GALLERY
+                })
                 .then(() => {
                     this.hasLoaded = true
                 })
