@@ -2,8 +2,8 @@
     <div class="container d-flex flex-column align-items-center text-center">
         <div class="display-6 mb-5">Opskrifter</div>
         <!-- ADMIN -->
-        <button v-if="user.loggedIn" class="btn btn-warning m-3" data-bs-toggle="modal"
-            data-bs-target="#addRecipeModal" @click="openAddRecipeModal()">Tilføj ny opskrift 
+        <button v-if="user.loggedIn" class="btn btn-warning m-3" data-bs-toggle="modal" data-bs-target="#addRecipeModal"
+            @click="openAddRecipeModal()">Tilføj ny opskrift
         </button>
         <!-- add recipe modal -->
         <div class="modal fade modal-lg" id="addRecipeModal">
@@ -74,7 +74,7 @@
         </div>
 
         <!-- recipes -->
-        <div class="row justify-content-center w-100" v-if="hasRecipes">
+        <div class="row justify-content-center w-100" v-if="hasRecipes && this.hasLoaded">
             <template v-for="(recipe, index) in recipes" :key="index">
                 <!-- recipes -->
                 <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 col-12 mb-5">
@@ -82,8 +82,8 @@
                         :ingredientsCount="recipe.ingredientsCount" :portions="recipe.portions"
                         :courseOfAction="recipe.courseOfAction" :imgFile="recipe.imgFile?.url" alt=""
                         :shouldOverflow="false" :seeRecipeModal="'seeRecipeModal' + index" :id="recipe.id"
-                        @deleteRecipe="deleteRecipe(recipe.id)"
-                        @updateRecipe="openUpdateRecipeModal(recipe.id)"></RecipeCard>
+                        @deleteRecipe="deleteRecipe(recipe.id)" @updateRecipe="openUpdateRecipeModal(recipe.id)">
+                    </RecipeCard>
                 </div>
                 <!-- see recipie modal -->
                 <div class="modal fade modal-lg" :id="'seeRecipeModal' + index">
@@ -143,12 +143,22 @@
                 </div>
             </template>
         </div>
+        <div class="spinner-border" role="status" v-else-if="!this.hasLoaded">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div v-else>
+            Ingen opskrifter tilføjet endnu
+        </div>
     </div>
 </template>
 <script>
     import RecipeCard from '@/components/RecipeCard.vue';
     import StoragePaths from '@/services/firebase/constans/StoragePaths';
-    import { toastSuccess, toastError, toastWarning } from '../services/toasty.js'
+    import {
+        toastSuccess,
+        toastError,
+        toastWarning
+    } from '../services/toasty.js'
 
     export default {
         name: "recipes-route",
@@ -205,13 +215,17 @@
 
         methods: {
             addRecipe() {
-                let { imgFile } = this.recipe
+                let {
+                    imgFile
+                } = this.recipe
                 imgFile = this.previewImage
                 try {
                     this.$store.dispatch('addRecipe', {
-                        ...this.recipe, imgFile })
+                        ...this.recipe,
+                        imgFile
+                    })
                     toastSuccess('Opskrift tilføet')
-                } catch(e) {
+                } catch (e) {
                     toastError(e)
                 }
             },
@@ -222,18 +236,23 @@
                         docId
                     })
                     toastWarning('Opskrift slettet')
-                } catch(e) {
+                } catch (e) {
                     toastError(e)
                 }
             },
 
             updateRecipe() {
-                const { id } = this.recipe
+                const {
+                    id
+                } = this.recipe
                 try {
-                    this.$store.dispatch('updateRecipe', { docId: id, ...this.recipe })
+                    this.$store.dispatch('updateRecipe', {
+                        docId: id,
+                        ...this.recipe
+                    })
                     this.clearInputFields()
                     toastSuccess('Opskrift opdateret')
-                } catch(e) {
+                } catch (e) {
                     toastError(e)
                 }
             },
@@ -272,8 +291,13 @@
 
             async openUpdateRecipeModal(docId) {
                 this.shouldUpdate = true
-                const currRecipe = await this.$store.dispatch('getRecipe', { docId })
-                this.recipe =  { ...currRecipe, id: docId }
+                const currRecipe = await this.$store.dispatch('getRecipe', {
+                    docId
+                })
+                this.recipe = {
+                    ...currRecipe,
+                    id: docId
+                }
             },
 
             clearInputFields() {
