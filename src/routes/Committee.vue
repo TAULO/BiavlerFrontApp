@@ -70,6 +70,8 @@
     </div>
 </template>
 <script>
+    import { mapStores } from 'pinia'
+    import { authStore, committeeStore, storageStore } from '@/store';
     import CommitteeMember from '@/components/CommitteeMember.vue';
     import StoragePaths from '@/services/firebase/constans/StoragePaths';
     import { toastSuccess, toastError, toastWarning } from '../services/toasty.js'
@@ -100,16 +102,18 @@
         },
         
         computed: {
+            ...mapStores(authStore, committeeStore, storageStore),
+
             user() {
-                return this.$store.getters.user
+                return this.authStore.user
             },
 
             images() {
-                return this.$store.getters.images
+                return this.storageStore.images
             },
 
             committeeMembers() {
-                return this.$store.getters.committeeMembers
+                return this.committeeStore.committeeMembers
             },
 
             hasCommitteeMembers() {
@@ -127,14 +131,14 @@
                 image = this.previewImage
 
                 try {
-                    this.$store.dispatch('addCommitteeMember', {
+                    this.committeeStore.addCommitteeMember({
                         name,
                         role,
                         bio,
                         email,
                         image
                     }).then(async () => {
-                        await this.$store.dispatch('deleteImages', {
+                        await this.storageStore.deleteImages({
                             storagePath: StoragePaths.COMMITEEMEMBER,
                             files: this.tempFileArr
                         })
@@ -146,12 +150,10 @@
                 }
             },
 
-            async deleteCommitteeMember(docId, name, image) {
+            async deleteCommitteeMember(docId, image) {
                 try {
-                    await this.$store.dispatch('deleteCommitteeMember', {
-                        docId,
-                        imageName: image.name
-                    })
+                    // TODO: image.name??
+                    this.committeeStore.deleteCommitteeMember({ docId, imageName: image.name })
                     toastWarning('Bestyrelsesmedlem slettet')
                 } catch(e) {
                     toastError(e)
@@ -161,14 +163,7 @@
             async updateCommitteeMember() {
                 const { id, name, role, bio, email, image } = this.committeeMember
                 try {
-                    await this.$store.dispatch('updateCommitteeMember', {
-                        docId: id,
-                        name,
-                        role,
-                        bio,
-                        email,
-                        image
-                    })
+                    this.committeeStore.updateCommitteeMember({ docId: id, name, role, bio, email, image })
                     this.clearInputFields()
                     toastSuccess("Bestyrelsesmedlem opdateret")
                 } catch(e) {
@@ -177,18 +172,18 @@
             },  
 
             async getCommitteeMember(docId) {
-                return await this.$store.dispatch('getCommiteeMember', { docId })
+                return await this.committeeStore.getCommiteeMember({ docId })
             },
 
             changeImageOnChange(event) {
                 this.previewImage = event.target.files
                 this.hasLoadedImage = true
-                this.$store.dispatch('uploadImages', {
+                this.storageStore.uploadImages({
                     storagePath: StoragePaths.COMMITEEMEMBER,
                     files: this.previewImage
                 }).then(async () => {
                     this.hasLoadedImage = true
-                    const currFileURL = await this.$store.dispatch('getImageURL', {
+                    const currFileURL = await this.storageStore.getImageURL({
                         storagePath: StoragePaths.COMMITEEMEMBER,
                         imageName: this.previewImage[0].name
                     })
@@ -238,10 +233,7 @@
         },
 
         created() {
-            this.$store.dispatch('fetchCommitteeMembers')
-                .then(() => {
-                    this.hasLoaded = true
-            })
+            this.committeeStore.fetchCommitteeMembers().then(() => this.hasLoaded = true)
         }
     }
 </script>

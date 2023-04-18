@@ -70,6 +70,8 @@
     </div>
 </template>
 <script>
+    import { mapStores } from 'pinia'
+    import { authStore, eventStore } from '@/store';
     import CalendarEvent from '@/components/CalendarEvent.vue'
     import { toastSuccess, toastError, toastWarning } from '../services/toasty.js'
 
@@ -94,12 +96,14 @@
         },
 
         computed: {
+            ...mapStores(authStore, eventStore),
+
             user() {
-                return this.$store.getters.user
+                return this.authStore.user
             },
 
             events() {
-                return this.$store.getters.events
+                return this.eventStore.events
             },
 
             hasEvents() {
@@ -109,7 +113,7 @@
 
         methods: {
             async getEvent(docId) {
-                return await this.$store.dispatch('getEvent', { docId })
+                return await this.eventStore.getEvent({ docId })
             },
 
             async addEvent() {
@@ -119,11 +123,7 @@
                     description
                 } = this.event
                 try {
-                    await this.$store.dispatch('addEvent', {
-                        title,
-                        startDate,
-                        description
-                    })
+                    await this.eventStore.addEvent({ title, startDate, description })    
                     this.clearInputFields()
                     toastSuccess("Begivenhed tilføjet")
                 } catch(e) {
@@ -134,9 +134,7 @@
             deleteEvent(docId, eventTitle) {
                 if (confirm("Er du sikker på at du vil slette " + eventTitle + "?")) {
                     try {
-                        this.$store.dispatch('deleteEvent', {
-                            docId
-                        })
+                        this.eventStore.deleteEvent({ docId })
                         toastWarning('Begivenhed slettet')
                     } catch(e) {
                         toastError(e)
@@ -152,7 +150,7 @@
                     description
                 } = this.event
                 try {
-                    this.$store.dispatch('updateEvent', { docId: id, title, startDate, description })
+                    this.eventStore.updateEvent({ docId: id, title, startDate, description })
                     this.clearInputFields()
                     toastSuccess("Begivenhed opdateret")
                 } catch(e) {
@@ -184,15 +182,12 @@
             searchForEvents(e) {
                 const needle = e.target.value
                 const searchKeyword = "title"
-                this.$store.dispatch('searchForEvents', { needle, searchKeyword })
+                this.eventStore.searchForEvents({ needle, searchKeyword })
             }
         },
 
         created() {
-            this.$store.dispatch('fetchEvents')
-                .then(() => {
-                    this.hasLoaded = true
-                })
+            this.eventStore.fetchEvents().then(() => this.hasLoaded = true)
         }
     }
 </script>

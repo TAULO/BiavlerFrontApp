@@ -12,6 +12,8 @@
 </template>
 
 <script>
+    import { mapStores } from 'pinia';
+    import { authStore } from '@/store';
     import Dashboard from './components/Dashboard.vue';
     import Header from './components/Header.vue';
     import Footer from './components/Footer.vue';
@@ -23,8 +25,12 @@
             Header,
             Footer
         },
+        computed: {
+            ...mapStores(authStore)
+        },
+
         beforeMount() {
-            this.$store.dispatch('authChanged')
+            this.authStore.authChanged()
         }
     }
 </script>

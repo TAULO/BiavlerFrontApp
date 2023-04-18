@@ -55,6 +55,9 @@
     </div>
 </template>
 <script>
+import { authStore } from '@/store';
+import { mapStores } from 'pinia';
+
     export default {
         name: "recipe-card-component",
 
@@ -74,8 +77,10 @@
         },
 
         computed: {
+            ...mapStores(authStore),
+
             user() {
-                return this.$store.getters.user
+                return this.authStore.user
             },
         },
     }

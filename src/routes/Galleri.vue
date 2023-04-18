@@ -56,6 +56,8 @@
     </div>
 </template>
 <script>
+    import { mapStores } from 'pinia';
+    import { storageStore, authStore } from '@/store';
     import GalleryImage from '@/components/GalleryImage.vue'
     import StoragePaths from '@/services/firebase/constans/StoragePaths';
     import {
@@ -90,7 +92,7 @@
                 } catch (e) {
                     console.log(e)
                     setTimeout(() => {
-                        window.alert(e)
+                        toastError(e)
                         this.hasLoaded = true
                         this.error.hasError = true
                         this.error.message = e
@@ -101,16 +103,12 @@
             async uploadImages() {
                 try {
                     this.hasLoaded = false
-                    await this.$store.dispatch('uploadImages', {
-                        storagePath: StoragePaths.GALLERY,
-                        files: this.files
-                    })
+                    await this.storageStore.uploadImages({ storagePath: StoragePaths.GALLERY, files: this.files })
                     this.files = []
                     this.hasLoaded = true
                     toastSuccess('Billede(r) tilføet')
                 } catch (e) {
                     setTimeout(() => {
-                        window.alert(e)
                         this.hasLoaded = true
                         toastError(e)
                     }, 5000)
@@ -119,10 +117,7 @@
 
             deleteImage(imageName) {
                 try {
-                    this.$store.dispatch('deleteImage', {
-                        storagePath: StoragePaths.GALLERY,
-                        imageName
-                    })
+                    this.storageStore.deleteImage({ storagePath: StoragePaths.GALLERY, imageName })
                     toastWarning('Billede slettet')
                 } catch (e) {
                     toastError(e)
@@ -132,17 +127,14 @@
             async deleteMultipleImages() {
                 try {
                     this.hasLoaded = false
-                    await this.$store.dispatch('deleteImages', {
-                        storagePath: StoragePaths.GALLERY,
-                        images: this.deleteImages
-                    })
+                    this.storageStore.deleteImages({ storagePath: StoragePaths.GALLERY, images: this.deleteImages })
                     this.deleteImages = []
                     this.hasLoaded = true
                     toastWarning('Billeder slettet')
                 } catch (e) {
                     console.log(e)
                     setTimeout(() => {
-                        window.alert(e)
+                        toastError(e)
                         this.hasLoaded = true
                         toastError(e)
                     }, 5000)
@@ -171,8 +163,10 @@
         },
 
         computed: {
+            ...mapStores(storageStore, authStore),
+
             images() {
-                return this.$store.getters.images
+                return this.storageStore.images
             },
 
             hasImages() {
@@ -180,7 +174,7 @@
             },
 
             user() {
-                return this.$store.getters.user
+                return this.authStore.user
             },
 
             hasDeletedImages() {
@@ -197,12 +191,7 @@
         },
 
         created() {
-            this.$store.dispatch('getImagesUrl', {
-                    storagePath: StoragePaths.GALLERY
-                })
-                .then(() => {
-                    this.hasLoaded = true
-                })
+            this.storageStore.getImagesUrl({storagePath: StoragePaths.GALLERY}).then(() => this.hasLoaded = true)
         }
     }
 </script>

@@ -146,6 +146,8 @@
     </div>
 </template>
 <script>
+    import { mapStores } from 'pinia';
+    import { authStore, storageStore, recipeStore } from '@/store';
     import RecipeCard from '@/components/RecipeCard.vue';
     import StoragePaths from '@/services/firebase/constans/StoragePaths';
     import { toastSuccess, toastError, toastWarning } from '../services/toasty.js'
@@ -175,12 +177,14 @@
         },
 
         computed: {
+            ...mapStores(authStore, storageStore, recipeStore),
+
             user() {
-                return this.$store.getters.user
+                return this.authStore.user
             },
 
             recipes() {
-                return this.$store.getters.recipes
+                return this.recipeStore.recipes
             },
 
             hasRecipes() {
@@ -208,8 +212,7 @@
                 let { imgFile } = this.recipe
                 imgFile = this.previewImage
                 try {
-                    this.$store.dispatch('addRecipe', {
-                        ...this.recipe, imgFile })
+                    this.recipeStore.addRecipe({ ...this.recipe, imgFile })
                     toastSuccess('Opskrift tilføet')
                 } catch(e) {
                     toastError(e)
@@ -218,9 +221,7 @@
 
             deleteRecipe(docId) {
                 try {
-                    this.$store.dispatch('deleteRecipe', {
-                        docId
-                    })
+                    this.recipeStore.deleteRecipe({ docId })
                     toastWarning('Opskrift slettet')
                 } catch(e) {
                     toastError(e)
@@ -230,7 +231,7 @@
             updateRecipe() {
                 const { id } = this.recipe
                 try {
-                    this.$store.dispatch('updateRecipe', { docId: id, ...this.recipe })
+                    this.recipeStore.updateRecipe({ docId: id, ...this.recipe })
                     this.clearInputFields()
                     toastSuccess('Opskrift opdateret')
                 } catch(e) {
@@ -247,13 +248,13 @@
                 this.previewImage = e.target.files
                 // load image 
                 this.hasLoaded = true
-                this.$store.dispatch('uploadImages', {
+                this.storageStore.uploadImages({
                         storagePath: StoragePaths.RECIPE,
                         files: this.previewImage
                     })
                     .then(async () => {
                         console.log(this.previewImage)
-                        const currFileURL = await this.$store.dispatch('getImageURL', {
+                        const currFileURL = await this.storageStore.getImageURL({
                             storagePath: StoragePaths.RECIPE,
                             imageName: this.previewImage[0].name
                         })
@@ -272,7 +273,7 @@
 
             async openUpdateRecipeModal(docId) {
                 this.shouldUpdate = true
-                const currRecipe = await this.$store.dispatch('getRecipe', { docId })
+                const currRecipe = await this.recipeStore.getRecipe({ docId })
                 this.recipe =  { ...currRecipe, id: docId }
             },
 
@@ -290,10 +291,7 @@
         },
 
         created() {
-            this.$store.dispatch('fetchRecipes')
-                .then(() => {
-                    this.hasLoaded = true
-                })
+            this.recipeStore.fetchRecipes().then(() => this.hasLoaded = true)
         }
     }
 </script>

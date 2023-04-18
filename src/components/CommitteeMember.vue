@@ -28,6 +28,9 @@
     </div>
 </template>
 <script>
+    import { mapStores } from 'pinia'
+    import { authStore } from '@/store';
+
     export default {
         name: "committee-member-component",
 
@@ -44,8 +47,10 @@
         },
 
         computed: {
+            ...mapStores(authStore),
+
             user() {
-                return this.$store.getters.user
+                return this.authStore.user
             },
         },
     }

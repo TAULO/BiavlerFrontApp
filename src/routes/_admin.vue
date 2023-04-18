@@ -17,6 +17,8 @@
 </template>
 
 <script>
+    import { authStore } from '@/store'
+    import { mapStores } from 'pinia'
     import { toastSuccess, toastError } from '../services/toasty.js'
 
     export default {
@@ -30,10 +32,7 @@
         methods: {
             async signIn() {
                 try {
-                    await this.$store.dispatch("logIn", {
-                        email: this.email,
-                        password: this.password
-                    })
+                    await this.authStore.logIn({ email: this.email, password: this.password })
                     toastSuccess('Logget ind som: ' + this.email)
                 } catch(e) {
                     toastError(e)
@@ -42,7 +41,7 @@
             },
             async signOut() {
                 try {
-                    await this.$store.dispatch('logOut')
+                    await this.authStore.logOut()
                     toastSuccess('Du er logget ud')
                 } catch(e) {
                     toastError(e)
@@ -50,8 +49,10 @@
             }
         },
         computed: {
+            ...mapStores(authStore),
+            
             user() {
-                return this.$store.getters.user
+                return this.authStore.user
             },
         },
     }

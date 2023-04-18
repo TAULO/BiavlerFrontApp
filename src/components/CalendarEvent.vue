@@ -28,6 +28,9 @@
     </div>
 </template>
 <script>
+    import { mapStores } from 'pinia'
+    import { authStore } from '@/store'
+
     export default {
         name: "calendar-event-componnt",
         props: {
@@ -39,8 +42,10 @@
         },
 
         computed: {
+            ...mapStores(authStore),
+
             user() {
-                return this.$store.getters.user
+                return this.authStore.user
             },
         },
 
