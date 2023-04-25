@@ -16,7 +16,7 @@ const storageRef = ref(storage)
 async function uploadImages(storagePath, files) {
     try {
         if (!files || typeof files !== 'object') {
-            throw console.log('err')
+            throw console.log('Wrong type')
         }
         // REMOVE IF ONLY 1 FILE
         for (let i = 0; i < files.length; i++) {
@@ -57,7 +57,6 @@ async function deleteImages(storagePath, images) {
         throw "Noget gik galt ved sletning af billederne"
     }
 }
-
 
 async function getImagesUrl({
     storagePath
