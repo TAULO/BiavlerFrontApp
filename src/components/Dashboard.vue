@@ -27,8 +27,10 @@
         <div class="icon-link">
             <IconLink to="https://www.facebook.com/groups/391008191016453" icon="bi bi-facebook" class="fb-icon-link">
             </IconLink>
-            <!-- <a href="">min bier</a> -->
-            <IconLink to="" icon="bi bi-instagram" class="instagram-icon-link"></IconLink>
+            <a href="https://minebier.dk/da/" target="_">
+                <img src="../assets/minebier-logo.png" alt="" style="height: 30px; margin-bottom: 5px;" class="instagram-icon-link">
+            </a>
+            <!-- <IconLink to="https://minebier.dk/da/" class="instagram-icon-link"></IconLink> -->
         </div>
     </div>
 </template>
@@ -136,14 +138,17 @@
         height: 50px;
     }
 
+    .fb-icon-link {
+        color: white;
+    }
+
     .fb-icon-link:hover {
         color: #4267B2;
         opacity: 1!important;
     }
-
+    
     .instagram-icon-link:hover {
-        color: #C13584;
-        opacity: 0.8!important;
+        opacity: 0.5;
     }
 
     /* media-q for smaller screen sizes */
