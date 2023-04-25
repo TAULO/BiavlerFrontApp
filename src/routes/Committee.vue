@@ -146,7 +146,7 @@
                     })
                     toastSuccess("Bestyrelsesmedlem tilføjet")
                 } catch(e) {
-                    toastError(e)
+                    toastError('Der skete en fejl')
                 }
             },
 
@@ -156,7 +156,7 @@
                     this.committeeStore.deleteCommitteeMember({ docId, imageName: image.name })
                     toastWarning('Bestyrelsesmedlem slettet')
                 } catch(e) {
-                    toastError(e)
+                    toastError('Der skete en fejl')
                 }
             },
             
@@ -167,7 +167,7 @@
                     this.clearInputFields()
                     toastSuccess("Bestyrelsesmedlem opdateret")
                 } catch(e) {
-                    toastError(e)
+                    toastError('Der skete en fejl')
                 }
             },  
 

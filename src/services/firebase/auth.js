@@ -6,10 +6,11 @@ const auth = getAuth();
 // returns true or false whether not user succeded to log in
 async function logIn(email, password) {
     try {
-      return await signInWithEmailAndPassword(auth, email, password)
+      await signInWithEmailAndPassword(auth, email, password)
+      console.log('Signed in')
     } catch (e) {
       console.log(e)
-      throw ('Der skete en fejl ved login. Kig efter korrekt e-mail eller password og prøv igen.')
+      throw (e)
     }
 }
 
@@ -18,7 +19,8 @@ async function logOut() {
         await signOut(auth)
         console.log("user logged out")
     } catch(e) {
-        throw "Der skete en fejl ved logud"
+      console.log(e)
+      throw e
     }
 }
 

@@ -127,7 +127,7 @@
                     this.clearInputFields()
                     toastSuccess("Begivenhed tilføjet")
                 } catch(e) {
-                    toastError(e)
+                    toastError('Der skete en fejl')
                 }
             },
 
@@ -137,7 +137,7 @@
                         this.eventStore.deleteEvent({ docId })
                         toastWarning('Begivenhed slettet')
                     } catch(e) {
-                        toastError(e)
+                        toastError('Der skete en fejl')
                     }
                 }
             },
@@ -154,7 +154,7 @@
                     this.clearInputFields()
                     toastSuccess("Begivenhed opdateret")
                 } catch(e) {
-                    toastError(e)
+                    toastError('Der skete en fejl')
                 }
             },  
 

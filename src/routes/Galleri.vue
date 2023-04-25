@@ -92,7 +92,7 @@
                 } catch (e) {
                     console.log(e)
                     setTimeout(() => {
-                        toastError(e)
+                        toastError('Der skete en fejl')
                         this.hasLoaded = true
                         this.error.hasError = true
                         this.error.message = e
@@ -110,7 +110,7 @@
                 } catch (e) {
                     setTimeout(() => {
                         this.hasLoaded = true
-                        toastError(e)
+                        toastError('Der skete en fejl')
                     }, 5000)
                 }
             },
@@ -120,7 +120,7 @@
                     this.storageStore.deleteImage({ storagePath: StoragePaths.GALLERY, imageName })
                     toastWarning('Billede slettet')
                 } catch (e) {
-                    toastError(e)
+                    toastError('Der skete en fejl')
                 }
             },
 
@@ -134,9 +134,8 @@
                 } catch (e) {
                     console.log(e)
                     setTimeout(() => {
-                        toastError(e)
                         this.hasLoaded = true
-                        toastError(e)
+                        toastError('Der skete en fejl')
                     }, 5000)
                 }
             },

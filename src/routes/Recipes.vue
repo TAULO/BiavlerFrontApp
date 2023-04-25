@@ -227,7 +227,7 @@
                     this.recipeStore.addRecipe({ ...this.recipe, imgFile })
                     toastSuccess('Opskrift tilføet')
                 } catch (e) {
-                    toastError(e)
+                    toastError('Der skete en fejl')
                 }
             },
 
@@ -236,7 +236,7 @@
                     this.recipeStore.deleteRecipe({ docId })
                     toastWarning('Opskrift slettet')
                 } catch (e) {
-                    toastError(e)
+                    toastError('Der skete en fejl')
                 }
             },
 
@@ -249,7 +249,7 @@
                     this.clearInputFields()
                     toastSuccess('Opskrift opdateret')
                 } catch (e) {
-                    toastError(e)
+                    toastError('Der skete en fejl')
                 }
             },
 

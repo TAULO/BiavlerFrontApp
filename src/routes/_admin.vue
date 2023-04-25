@@ -35,7 +35,7 @@
                     await this.authStore.logIn({ email: this.email, password: this.password })
                     toastSuccess('Logget ind som: ' + this.email)
                 } catch(e) {
-                    toastError(e)
+                    toastError('Forkert email eller kodeord')
                 }
 
             },
@@ -44,7 +44,7 @@
                     await this.authStore.logOut()
                     toastSuccess('Du er logget ud')
                 } catch(e) {
-                    toastError(e)
+                    toastError('Der skete en fejl')
                 }
             }
         },

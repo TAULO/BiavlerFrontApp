@@ -17,8 +17,7 @@ const db = getFirestore(app)
 
 async function addDocument(collectionId, { ...data }) {
   try {
-    await addDoc(collection(db, collectionId), data)
-    console.log("Added document to: " + collectionId)
+    return await addDoc(collection(db, collectionId), data)
   } catch (e) {
     console.log("Error adding event:", e)
   }
