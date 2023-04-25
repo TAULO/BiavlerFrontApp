@@ -55,7 +55,7 @@ const routes = [
     component: _admin,
   },
   {
-    path: "/:catchAll(.*)",
+    path: "/:pathMatch(.*)*",
     component: <div>Side ikke fundet</div>,
   },
 ];
