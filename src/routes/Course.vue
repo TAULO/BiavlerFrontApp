@@ -1,6 +1,6 @@
 <template>
     <div class="container d-flex flex-column justify-content-center align-items-center">
-        <h2 class="display-6 text-center">Begynderkursus i praktis biavl</h2>
+        <!-- <h2 class="display-6 text-center">Begynderkursus i praktis biavl</h2> -->
         <div class="card d-flex flex-row justify-content-between m-4">
             <div class="m-3">
                 <div class="row">

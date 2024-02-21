@@ -1,6 +1,6 @@
 <template>
     <div class="container d-flex flex-column align-items-center text-center">
-        <div class="display-6 mb-5">Opskrifter</div>
+        <!-- <div class="display-6 mb-5">Opskrifter</div> -->
         <!-- ADMIN -->
         <button v-if="user.loggedIn" class="btn btn-warning m-3" data-bs-toggle="modal" data-bs-target="#addRecipeModal"
             @click="openAddRecipeModal()">Tilføj ny opskrift

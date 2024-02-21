@@ -2,8 +2,8 @@
     <div class="dashboard d-flex flex-column flex-shrink-0 bg-gradient">
         <router-link to="/" class="brand-style d-flex align-items-center">
             <img src="../assets/bee.png" alt="" class="bee">
-            <div class="headline-text" @click="setHome()">
-                <span>RINGE OG OMEGNS <br> BIAVLERFORENING</span>
+            <div class="headline-text" @click="setHome()" style="margin-left: 10px;">
+                <span>Ringe & Omegns<br>Biavlerforening</span>
             </div>
         </router-link>
         <hr class="line">
