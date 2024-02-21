@@ -11,17 +11,19 @@
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
-        <img v-else class="card-img-top rounded-circle align-self-center shadow-sm" :src="image" alt="">
-       <div class="card-body">
+        <!-- <img v-else class="card-img-top rounded-circle align-self-center shadow-sm" :src="image" alt=""> -->
+       <div class="card-body mt-1">
             <h4 class="card-title">
-                {{ name }}
+                {{ name  }}
             </h4>
-            <div class="card-subtitle text-muted">
-                {{ role }}
+            <div class="card-subtitle text-muted" :style="role ? {opacity: 1} : {opacity: 0}">
+            {{ role || 'role' }}
             </div>
             <hr>
-            <p>{{ bio }}</p>
-       </div>
+        </div>
+        <div class="card-subtitle text-muted">
+            {{ bio }}
+        </div>
        <div class="card-booter text-muted mb-2">
             {{ email }}
        </div>
