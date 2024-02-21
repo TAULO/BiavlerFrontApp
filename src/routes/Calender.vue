@@ -1,6 +1,6 @@
 <template>
     <div class="container d-flex flex-column align-items-center">
-        <div class="display-6 mb-5 text-center">Kommende begivenheder</div>
+        <!-- <div class="display-6 mb-5 text-center">Kommende begivenheder</div> -->
         <!-- ADMIN -->
         <button v-if="user.loggedIn" class="btn btn-warning m-3" data-bs-toggle="modal"
             data-bs-target="#addEventModal" @click="openAddEventModal()">Tilføj ny begivenhed
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-75 event-container" v-if="hasLoaded">
+        <div class="w-75 event-container">
             <div class="d-flex justify-content-between">
                 <div class="dropdown">
                     <span class="input-group-text filter-span"><i class="bi bi-filter-circle"></i></span>
@@ -55,17 +55,21 @@
                     <input class="form-control" placeholder="søg efter begivenheder" @input="searchForEvents($event)">
                 </div>
             </div>
-            <template v-if="hasEvents">
-                <template v-for="(event, index) in events" :key="index">
-                    <CalendarEvent :id="event.id" :title="event.title" :startDate="event.startDate" :endDate="event.endDate" :description="event.description" @deleteEvent="deleteEvent(event.id, event.title)" @openUpdateModal="openUpdateModal(event.id)"></CalendarEvent>
-                </template>
-            </template>
-            <div v-else class="text-center mt-5">
-                Ingen begivenheder tilføjet endnu
-            </div>
         </div>
-        <div class="spinner-border" role="status" v-else>
-            <span class="visually-hidden">Loading...</span>
+        <div class="d-flex justify-content-center mt-5">
+            <template v-if="hasLoaded">
+                <template v-if="hasEvents">
+                    <template v-for="event in events" :key="event.id">
+                        <CalendarEvent :id="event.id" :title="event.title" :startDate="event.startDate" :endDate="event.endDate" :description="event.description" @deleteEvent="deleteEvent(event.id, event.title)" @openUpdateModal="openUpdateModal(event.id)"></CalendarEvent>
+                    </template>
+                </template>
+                <div v-else class="">
+                    Ingen kommende begivenheder ...
+                </div>
+            </template>
+            <div class="spinner-border position-absolute" role="status" v-else>
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
     </div>
 </template>
@@ -247,7 +251,7 @@
     }
 
     /* media-q for smaller screen sizes */
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1140px) {
         .search-input {
             width: 50%;
             text-overflow: ellipsis;
@@ -258,7 +262,7 @@
         }
     }
 
-    @media only screen and (max-width: 767px) {
+    @media only screen and (max-width: 720px) {
         .search-input {
             width: 100%;
             text-overflow: ellipsis;

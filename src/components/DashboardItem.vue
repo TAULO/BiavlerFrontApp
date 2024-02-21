@@ -35,7 +35,7 @@
     }
 
     /* media-q for smaller screen sizes */
-    @media only screen and (max-width: 767px) {
+    @media only screen and (max-width: 1140px) {
         .nav-link-text {
             display: none;
         }

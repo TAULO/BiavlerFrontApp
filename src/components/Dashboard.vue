@@ -1,6 +1,6 @@
 <template>
     <div class="dashboard d-flex flex-column flex-shrink-0 bg-gradient">
-        <router-link to="/" class="brand-style d-flex align-items-center mb-3 mb-md-0 me-md-auto test">
+        <router-link to="/" class="brand-style d-flex align-items-center">
             <img src="../assets/bee.png" alt="" class="bee">
             <div class="headline-text" @click="setHome()">
                 <span>RINGE OG OMEGNS <br> BIAVLERFORENING</span>
@@ -8,7 +8,7 @@
         </router-link>
         <hr class="line">
         <ul class="nav nav-pills pills-style flex-column mb-auto">
-            <DashboardItem icon="bi bi-house-door-fill test" path="/om" text="Om os" @click="setNavActive()"
+            <DashboardItem icon="bi bi-house-door-fill" path="/om" text="Om os" @click="setNavActive()"
                 :isActive="active.about"></DashboardItem>
             <DashboardItem icon="bi bi-mortarboard-fill" path="/kursus" text="Kursus i biavl" @click="setNavActive()"
                 :isActive="active.course"></DashboardItem>
@@ -91,8 +91,7 @@
 <style>
     .dashboard {
         background-color: #f3ac19;
-        width: 280px;
-        /* this value must match margin-left at app.vue */
+        width: 260px; /* this value must match margin-left at app.vue */
         height: 100%;
         overflow-x: hidden;
         position: fixed;
@@ -139,20 +138,28 @@
     }
 
     .fb-icon-link {
-        color: white;
+        color: #656563;
     }
 
     .fb-icon-link:hover {
         color: #4267B2;
         opacity: 1!important;
+        cursor: pointer;
+    }
+
+    /* bee link */
+    .instagram-icon-link {
+        /* color: #656563!important; */
     }
     
+    /* bee link */
     .instagram-icon-link:hover {
         opacity: 0.5;
+        cursor: pointer;
     }
 
     /* media-q for smaller screen sizes */
-    @media only screen and (max-width: 767px) {
+    @media only screen and (max-width: 1140px) {
         .dashboard {
             background-color: #f3ac19;
             width: 50px;
@@ -186,6 +193,10 @@
 
         .line {
             margin: 5px;
+        }
+
+        .brand-style {
+            margin-bottom: 20px;
         }
     }
 </style>

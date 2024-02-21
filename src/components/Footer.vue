@@ -24,7 +24,15 @@
         width: auto;
     }
 
-    @media only screen and (max-width: 767px) {
+    @media only screen and (max-width: 1140px) {
+        img {
+            height: 80px;
+            width: auto;
+            transform: rotate(60deg) rotateY(180deg) translate(20px, 30px);
+        }
+    }
+
+    @media only screen and (max-width: 720px) {
         img {
             height: 50px;
             width: auto;

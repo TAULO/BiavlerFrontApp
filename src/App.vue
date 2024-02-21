@@ -43,8 +43,7 @@
         max-height: 100vh;
         overflow-x: auto;
         overflow-y: scroll;
-        margin-left: 280px;
-        /* same as the width of the sidenav */
+        margin-left: 260px; /* same as the width of the sidenav */
     }
 
     body {
@@ -68,7 +67,7 @@
     }
 
     /* media-q for smaller screen sizes */
-    @media only screen and (max-width: 767px) {
+    @media only screen and (max-width: 1140px) {
         .main {
             display: flex;
             flex-wrap: nowrap;
@@ -76,8 +75,7 @@
             max-height: 100vh;
             overflow-x: auto;
             overflow-y: scroll;
-            margin-left: 50px;
-            /* same as the width of the sidenav */
+            margin-left: 50px; /* same as the width of the sidenav */
         }
     }
 </style>

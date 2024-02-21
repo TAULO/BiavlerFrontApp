@@ -3,12 +3,12 @@ import 'vue-toast-notification/dist/theme-bootstrap.css';
 
 const $toast = useToast();
 
-function toastSuccess(content) {
-    $toast.success(content)
+function toastSuccess(content, duration = 2000) {
+    $toast.success(content, { duration })
 }
 
-function toastError(content) {
-    $toast.error(content)
+function toastError(content, duration = 2000) {
+    $toast.error(content, { duration })
 } 
 
 function toastWarning(content) {

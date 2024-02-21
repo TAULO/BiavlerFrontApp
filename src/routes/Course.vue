@@ -208,7 +208,7 @@
         justify-content: center;
     }
      /* media-q for smaller screen sizes */
-     @media only screen and (max-width: 1000px) {
+     @media only screen and (max-width: 1140px) {
         img {
             width: 100px;
         }

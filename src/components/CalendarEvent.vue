@@ -1,29 +1,31 @@
 <template>
-    <div class="card m-4 p-3">
-        <div class="card-body whitespace-fix">
-            <!-- ADMIN -->
-            <div class="d-flex justify-content-end" v-if="user.loggedIn">
-                <i class="bi bi-arrow-clockwise position-absolute me-4" @click="$emit('openUpdateModal', id)"
-                    data-bs-toggle="modal" data-bs-target="#addEventModal"></i>
-                <i class="bi bi-trash-fill position-absolute" @click="$emit('deleteEvent', id, title)"></i>
+    <div class="container">
+        <div class="col-4 col-sm-12 card m-4 p-3">
+            <div class="card-body whitespace-fix">
+                <!-- ADMIN -->
+                <div class="d-flex justify-content-end" v-if="user.loggedIn">
+                    <i class="bi bi-arrow-clockwise position-absolute me-4" @click="$emit('openUpdateModal', id)"
+                        data-bs-toggle="modal" data-bs-target="#addEventModal"></i>
+                    <i class="bi bi-trash-fill position-absolute" @click="$emit('deleteEvent', id, title)"></i>
+                </div>
+                <h5 class="card-title">
+                    {{ title }}
+                </h5>
+                <div class="d-flex">
+                    <h6 class="card-subtitle mb-4 text-muted">{{ dateConverter(startDate) }} </h6>
+                </div>
+                <!-- <div v-else class="mb-4 d-flex flex-column">
+                    <h6 class="card-subtitle text-muted">{{ dateConverter(startDate) }}</h6>
+                    <h6 class="card-subtitle text-muted mx-1 m-2"></h6>
+                    <h6 class="card-subtitle text-muted">{{ dateConverter(endDate) }}</h6>
+                </div> -->
+                <p class="card-text">
+                    {{ description }}
+                </p>
+                <!-- <div class="d-flex justify-content-end">
+                    <div class="btn btn-warning">Læs mere</div>
+                </div> -->
             </div>
-            <h5 class="card-title">
-                {{ title }}
-            </h5>
-            <div class="d-flex">
-                <h6 class="card-subtitle mb-4 text-muted">{{ dateConverter(startDate) }} </h6>
-            </div>
-            <!-- <div v-else class="mb-4 d-flex flex-column">
-                <h6 class="card-subtitle text-muted">{{ dateConverter(startDate) }}</h6>
-                <h6 class="card-subtitle text-muted mx-1 m-2"></h6>
-                <h6 class="card-subtitle text-muted">{{ dateConverter(endDate) }}</h6>
-            </div> -->
-            <p class="card-text">
-                {{ description }}
-            </p>
-            <!-- <div class="d-flex justify-content-end">
-                <div class="btn btn-warning">Læs mere</div>
-            </div> -->
         </div>
     </div>
 </template>

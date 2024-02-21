@@ -43,7 +43,7 @@ export const authStore = defineStore('auth', {
     }
   },
   getters: {
-    user(state) {
+    getUser(state) {
       return state
     },
   },
