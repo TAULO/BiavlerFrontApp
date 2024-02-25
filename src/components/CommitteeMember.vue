@@ -2,7 +2,7 @@
     <div class="card mb-3 text-center">
          <!-- ADMIN -->
         <div class="d-flex justify-content-end" v-if="user.loggedIn">
-            <!-- <i class="bi bi-arrow-clockwise position-absolute" data-bs-toggle="modal" data-bs-target="#committeeModal" @click="$emit('openUpdateModal', id)" style="margin-right: 10%; margin-top: 2%;"></i> -->
+            <i class="bi bi-arrow-clockwise position-absolute" data-bs-toggle="modal" data-bs-target="#committeeModal" @click="$emit('openUpdateModal', id)" style="margin-right: 10%; margin-top: 2%;"></i>
             <i class="bi bi-trash-fill position-absolute" style="margin-right: 2%; margin-top: 2%;" @click="$emit('deleteCommitteeMember', id, name, image)"></i>
         </div>
         <!-- image -->
