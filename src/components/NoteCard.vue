@@ -2,7 +2,7 @@
     <div class="container">
         <div class="card-custom card-just-text">
             <div class="content">
-                <h6 class="content-category">{{ category }}</h6>
+                <!-- <h6 class="content-category">{{ category }}</h6> -->
                 <h4 class="content-title">{{ title }}</h4>
                 <div class="content-description"><span v-html="description"></span></div>
             </div>

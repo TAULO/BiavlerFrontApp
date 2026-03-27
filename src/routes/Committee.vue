@@ -55,14 +55,16 @@
             </div>
         </div>
         <div v-if="hasCommitteeMembers" class="row justify-content-center">
-            <template v-for="(member, index) in committeeMembers" :key="index">
-                <div v-if="hasLoaded" class="col-xl-4 col-lg-5 col-md-10 col-sm-10">
-                    <CommitteeMember :name="member.name" :role="member.role" :bio="member.bio" :email="member.email" :image="member.image.url" :id="member.id" :hasLoadedImage="this.hasLoadedImage" @deleteCommitteeMember="deleteCommitteeMember(member.id, member.name, member.image)" @openUpdateModal="openUpdateModal(member.id)"></CommitteeMember>
-                </div>
-                <div v-else class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </template>
+            <div v-if="hasLoaded" class="row justify-content-center">
+                <template v-for="(member, index) in committeeMembers" :key="index">
+                    <div class="col-xl-4 col-lg-6 col-md-10 col-sm-10">
+                        <CommitteeMember :name="member.name" :role="member.role" :bio="member.bio" :email="member.email" :image="member.image.url" :id="member.id" :hasLoadedImage="this.hasLoadedImage" @deleteCommitteeMember="deleteCommitteeMember(member.id, member.name, member.image)" @openUpdateModal="openUpdateModal(member.id)"></CommitteeMember>
+                    </div>
+                </template>
+            </div>
+            <div v-else class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
         <div v-else class="d-flex justify-content-center">
             Ingen bestyrelsesmedlemmer tilføjet endnu

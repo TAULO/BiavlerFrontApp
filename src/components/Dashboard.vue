@@ -7,20 +7,20 @@
             </div>
         </router-link>
         <hr class="line">
-        <ul class="nav nav-pills pills-style flex-column mb-auto">
-            <DashboardItem icon="bi bi-house-door-fill" path="/om" text="Om os" @click="setNavActive()"
+        <ul class="nav nav-pills pills-style flex-column mb-auto"  @click="setNavActive()" >
+            <DashboardItem icon="bi bi-house-door-fill" path="/om" text="Om os"
                 :isActive="active.about"></DashboardItem>
-            <DashboardItem icon="bi bi-mortarboard-fill" path="/kursus" text="Kursus i biavl" @click="setNavActive()"
+            <DashboardItem icon="bi bi-mortarboard-fill" path="/kursus" text="Kursus i biavl"
                 :isActive="active.course"></DashboardItem>
             <DashboardItem icon="bi bi-calendar2-event-fill icon-" path="/kalender" text="Kalender"
-                @click="setNavActive()" :isActive="active.calender"></DashboardItem>
-            <DashboardItem icon="bi bi-people-fill" path="/bestyrelse" text="Bestyrelse" @click="setNavActive()"
+                :isActive="active.calender"></DashboardItem>
+            <DashboardItem icon="bi bi-people-fill" path="/bestyrelse" text="Bestyrelse"
                 :isActive="active.committee"></DashboardItem>
             <DashboardItem icon="bi bi-collection-fill" path="/aaret-i-bigaarden" text="Året i bigården"
-                @click="setNavActive()" :isActive="active.apiary"></DashboardItem>
-            <DashboardItem icon="bi bi-book-half" path="/opskrifter" text="Opskrifter" @click="setNavActive()"
+                :isActive="active.apiary"></DashboardItem>
+            <DashboardItem icon="bi bi-book-half" path="/opskrifter" text="Opskrifter"
                 :isActive="active.recipes"></DashboardItem>
-            <DashboardItem icon="bi bi-images" path="/galleri" text="Galleri" @click="setNavActive()"
+            <DashboardItem icon="bi bi-images" path="/galleri" text="Galleri"
                 :isActive="active.galleri"></DashboardItem>
         </ul>
         <hr class="line">
