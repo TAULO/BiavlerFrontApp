@@ -126,7 +126,7 @@
         methods: {
             async addCommitteeMember() {
                 this.shouldUpdate = false
-                let { name, role, bio, email, image } = this.committeeMember
+                 let { name, role, bio, email, image } = this.committeeMember
 
                 // returns the last item of array, which is the one I need
                 // image = this.tempFileArr.pop()
@@ -155,8 +155,10 @@
             async deleteCommitteeMember(docId, image) {
                 try {
                     // TODO: image.name??
-                    this.committeeStore.deleteCommitteeMember({ docId, imageName: image.name })
-                    toastWarning('Bestyrelsesmedlem slettet')
+                    if (confirm("Er du sikker på at du vil slette ?")) {
+                        this.committeeStore.deleteCommitteeMember({ docId, imageName: image.name })
+                        toastWarning('Bestyrelsesmedlem slettet')
+                    }
                 } catch(e) {
                     toastError('Der skete en fejl')
                 }
